@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llContainer"
+    android:background="@color/colorGolden"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/backgroundView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/background_camera">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/background_color"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/lb_logo" />
+
+        <LinearLayout
+            android:id="@+id/containerTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivLogo"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvState"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/textNoFaceDetected"
+                android:textSize="@dimen/textSizeMax"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                tools:ignore="RelativeOverlap"
+                style="@style/Style.TextView.Regular.Sans" />
+
+            <TextView
+                android:id="@+id/tvEmployeeNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/textSizeMinimal"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                tools:ignore="RelativeOverlap"
+                style="@style/Style.TextView.Bold.Sans" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/cameraView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/containerTop"
+            android:layout_above="@id/containerBottom"
+            android:visibility="visible"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true">
+
+                <androidx.camera.view.PreviewView
+                    android:id="@+id/previewView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:scaleType="fillCenter" />
+
+                <ImageView
+                    android:id="@+id/faceSizeReference"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/liveness_detection_frame"
+                    android:contentDescription="@string/app_name" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/containerBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_camera"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:contentDescription="@string/app_name"
+            style="@style/RippleEffect.Container">
+
+            <com.badoualy.stepperindicator.StepperIndicator
+                android:id="@+id/stepper"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:stpi_indicatorColor="@color/lbDarkBlue"
+                app:stpi_lineDoneColor="@color/lbDarkBlue"
+                app:stpi_lineColor="@color/colorWhite"
+                app:stpi_circleColor="@color/colorWhite"
+                app:stpi_stepCount="3" />
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:max="4"
+                android:visibility="gone" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/config_button"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/background_color"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_settings"
+                    tools:ignore="SpeakableTextPresentCheck"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/iv_animation"
+                    android:layout_height="60dp"
+                    android:layout_width="60dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="gone"/>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/iv_animation_camera"
+                    android:layout_height="60dp"
+                    android:layout_width="60dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="gone"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <TextView
+            style="@style/Style.FloatingActionButton.Right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/app_version"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textSizeMax"
+            tools:ignore="RelativeOverlap,TouchTargetSizeCheck" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/backgroundDialog"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/transparent_dark">
+
+    </View>
+</androidx.constraintlayout.widget.ConstraintLayout>

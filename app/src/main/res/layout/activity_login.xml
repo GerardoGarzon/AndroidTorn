@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".views.activities.LoginActivity">
+
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="50dp"
+        android:src="@drawable/lb_logo"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/lbl_welcome"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_login_title"
+            android:textSize="@dimen/textSizeMax"
+            android:textColor="@color/colorWhite"
+            style="@style/Style.TextView.Bold.Sans"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/usr_textfield"
+            app:layout_constraintRight_toRightOf="@id/usr_textfield"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/usr_textfield"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/lbl_title_user"
+            app:startIconDrawable="@drawable/ic_user"
+            app:startIconTint="@color/colorWhite"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_welcome"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
+            app:boxStrokeColor="@color/text_input_layout_stroke_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usr_field"
+                android:text="10040496"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/usr_password"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/lbl_title_password"
+            app:startIconDrawable="@drawable/ic_password"
+            app:startIconTint="@color/colorWhite"
+            app:layout_constraintTop_toBottomOf="@+id/usr_textfield"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorWhite"
+            app:boxStrokeColor="@color/text_input_layout_stroke_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pass_field"
+                android:text="10040496_Ge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/colorWhite"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="@string/lbl_title_login"
+            app:layout_constraintTop_toBottomOf="@id/usr_password"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginVertical="40dp"
+            android:backgroundTint="@color/lbDarkBlue"
+            android:textColor="@color/colorWhite"/>
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="@string/lbl_title_back"
+            app:layout_constraintTop_toBottomOf="@id/loginButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginVertical="0dp"
+            android:backgroundTint="@color/transparent"
+            android:textColor="@color/colorWhite" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingHorizontal="150dp"
+        android:background="@color/background_spinner_color"
+        android:indeterminateTint="@color/lbDarkBlue"
+        android:visibility="gone"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

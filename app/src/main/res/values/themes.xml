@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="RippleEffect" parent="AppTheme">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:selectable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="RippleEffect.Container" parent="AppTheme">
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="RippleEffect.Circular" parent="AppTheme">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:selectable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Style.BottomNavigationView" parent="">
+        <item name="fontFamily">@font/google_sans_text_regular</item>
+    </style>
+
+    <style name="Style.Button.Borderless" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/backgroundButtonDialog</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:selectable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Style.Button.Colored" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/backgroundButtonDialog</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:selectable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Style.TextView.Regular.Sans" parent="Widget.AppCompat.TextView">
+        <item name="android:textStyle">normal</item>
+        <item name="fontFamily">@font/google_sans_text_regular</item>
+    </style>
+
+    <style name="Style.TextView.Bold.Sans" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/google_sans_text_bold</item>
+    </style>
+
+    <style name="Style.RecyclerView" parent="AppTheme">
+        <item name="android:background">@color/backgroundRecyclerView</item>
+    </style>
+
+    <style name="Style.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense" />
+
+    <style name="Style.TextInputEditText" parent="AppTheme">
+        <item name="android:lines">1</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="hintTextColor">@color/hintColor</item>
+    </style>
+
+    <style name="Style.CoordinatorLayout" parent="AppTheme">
+        <item name="colorPrimary">@color/colorWhite</item>
+    </style>
+
+    <style name="Style.TabLayout" parent="TextAppearance.Design.Tab">
+        <item name="android:background">@color/backgroundPrimary</item>
+        <item name="tabRippleColor">@color/colorWhite</item>
+        <item name="tabSelectedTextColor">@color/colorAccent</item>
+        <item name="tabTextColor">@color/colorWhite</item>
+        <item name="tabIndicatorColor">@color/colorAccent</item>
+        <item name="tabTextAppearance">@style/TabTextAppearance</item>
+    </style>
+
+    <style name="Style.FloatingActionButton" parent="AppTheme">
+        <item name="rippleColor">@color/colorWhite</item>
+        <item name="iconTint">@color/backgroundIcons</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:selectable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Style.FloatingActionButton.Left" parent="Style.FloatingActionButton">
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginBottom">25dp</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentEnd">false</item>
+        <item name="android:layout_alignParentTop">false</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+    <style name="Style.FloatingActionButton.Right" parent="Style.FloatingActionButton">
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_marginBottom">25dp</item>
+        <item name="android:layout_alignParentStart">false</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentTop">false</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="fontFamily">@font/google_sans_text_regular</item>
+    </style>
+
+    <style name="Style.FloatingActionButton.Restart" parent="Style.FloatingActionButton.Right">
+        <item name="icon">@drawable/ic_restart</item>
+    </style>
+
+    <style name="Style.FloatingActionButton.Enrollment.Add" parent="Style.FloatingActionButton.Right">
+        <item name="icon">@drawable/ic_add</item>
+    </style>
+
+    <style name="Style.FloatingActionButton.Enrollment.Capture" parent="Style.FloatingActionButton.Left">
+        <item name="icon">@drawable/ic_capture</item>
+    </style>
+
+    <style name="Style.FloatingActionButton.Enrollment.Save" parent="Style.FloatingActionButton.Right">
+        <item name="icon">@drawable/ic_save</item>
+    </style>
+
+    <style name="Style.FloatingActionButton.Enrollment.Send" parent="Style.FloatingActionButton.Right">
+        <item name="icon">@drawable/ic_send</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="Style.Dialog.Transparent" parent="AppTheme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="SplashScreen" parent="Theme.AppCompat.NoActionBar" >
+        <item name="android:windowBackground">@drawable/background_gradient</item>
+    </style>
+</resources>

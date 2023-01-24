@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text -->
+    <dimen name="textSizeLog">10sp</dimen>
+    <dimen name="textSizeMinimal">12sp</dimen>
+    <dimen name="textSizeMedium">15sp</dimen>
+    <dimen name="textSizeNormal">18sp</dimen>
+    <dimen name="textSizeBig">20sp</dimen>
+    <dimen name="textSizeMax">22sp</dimen>
+    <dimen name="textSizeUltra">38sp</dimen>
+
+    <!-- General -->
+    <dimen name="layoutIconSize">60dp</dimen>
+    <dimen name="layoutMargin">60dp</dimen>
+    <dimen name="layoutSizeLiveness">480dp</dimen>
+    <dimen name="layoutImageSize">100dp</dimen>
+    <dimen name="layoutPreviewWidthSize">120dp</dimen>
+    <dimen name="layoutPreviewHeightSize">180dp</dimen>
+
+    <!-- Corners -->
+    <dimen name="cornerCardViewNavigation">5dp</dimen>
+    <dimen name="cornerDialogCardView">10dp</dimen>
+    <dimen name="cornerCardView">5dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevationCardView">10dp</dimen>
+
+    <!-- Dialog -->
+    <dimen name="dialogWidthSize">350dp</dimen>
+    <dimen name="dialogIconSize">60dp</dimen>
+    <dimen name="dialogTitleTextSize">18sp</dimen>
+</resources>

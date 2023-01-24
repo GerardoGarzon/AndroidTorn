@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#607d8b</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorAccent">#607d8b</color>
+
+    <color name="search_layover_bg">#50000000</color>
+    <color name="colorGray2">#686868</color>
+
+    <color name="backgroundPrimary">@color/colorWhite</color>
+    <color name="backgroundToolbar">@color/colorPrimary</color>
+    <color name="backgroundIcons">@color/colorWhite</color>
+    <color name="backgroundBottomNav">@color/colorWhite</color>
+    <color name="backgroundLayoutIcon">@color/colorPrimary</color>
+    <color name="backgroundBottomNavEnabledIcon">@color/colorGray2</color>
+    <color name="backgroundDialog">@color/colorWhite</color>
+    <color name="backgroundButtonDialog">@color/colorGray2</color>
+    <color name="backgroundLayout">#F5F5F5</color>
+    <color name="backgroundCardNavigation">@color/colorWhite</color>
+    <color name="backgroundRecyclerView">@color/colorWhite</color>
+    <color name="backgroundCardView">@color/colorWhite</color>
+    <color name="backgroundNav">#F5F5F5</color>
+    <color name="backgroundFooter">#90000000</color>
+
+    <color name="textColor">@color/colorGray2</color>
+    <color name="textColorSnackBar">@color/colorWhite</color>
+    <color name="textColorToolbar">@color/colorWhite</color>
+    <color name="textColorDialogs">@color/textColor</color>
+    <color name="textColorTitleDialogs">@color/colorWhite</color>
+
+    <color name="hintColor">@color/colorWhite</color>
+
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#57585b</color>
+    <color name="colorGreen">#009473</color>
+    <color name="colorRed">#C40D3C</color>
+    <color name="colorGolden">#efb810</color>
+    <color name="colorAqua">#009688</color>
+    <color name="colorOrange">#f86734</color>
+    <color name="colorGrayLight">#efeff4</color>
+    <color name="transparent">#00000000</color>
+    <color name="materialRed">#970A2E</color>
+
+    <!-- Lebentech colors -->
+    <color name="background_color">#212121</color>
+    <color name="background_secondary_color">#484848</color>
+    <color name="background_gradient">#272727</color>
+    <color name="background_spinner_color">#CB131313</color>
+
+    <color name="lbDarkBlue">#1262A2</color>
+    <color name="lbLightBlue">#32D6D0</color>
+
+    <color name="transparent_dark">#A1000000</color>
+</resources>

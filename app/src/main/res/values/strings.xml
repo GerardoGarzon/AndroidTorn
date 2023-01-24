@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lebentech</string>
+    <string name="lbl_notification_title">Running process</string>
+    <string name="lbl_notification_body">Execution process, click the notification to stop it</string>
+
+    <!-- Face recognition states -->
+
+    <string name="textNoFaceDetected">No face detected</string>
+    <string name="textFaceDetected">Face detected, do not move</string>
+    <string name="textFaceTooFar">Face too far</string>
+    <string name="textFaceTooClose">Face too close</string>
+    <string name="textCenterFace">Center your face in the screen</string>
+    <string name="textNoCoincidences">There are no coincidences, try again</string>
+    <string name="textErrorInDetection">An error happened, try again</string>
+    <string name="textCorrectRecognition">Welcome</string>
+
+    <!-- - -->
+
+    <string name="app_version" translatable="false">v2.0</string>
+    <string name="lbl_login_title">Welcome</string>
+    <string name="lbl_title_user">User</string>
+    <string name="lbl_title_password">Password</string>
+    <string name="lbl_title_login">Login</string>
+    <string name="lbl_title_back">BACK</string>
+    <string name="location_1">Torre GS</string>
+    <string name="lbl_title_url">URL</string>
+    <string name="lbl_android_id">Android ID: %s</string>
+    <string name="lbl_title_accept">Ok</string>
+    <string name="lbl_new_url">New url</string>
+    <string name="lbl_text_error">An error has occurred, try again</string>
+    <string name="lbl_error_maintenance">In maintenance</string>
+    <string name="lbl_error_network">No network</string>
+    <string name="lbl_error_open_system">Problems with opening system</string>
+    <string name="lbl_error_server">Server issues</string>
+    <string name="lbl_user_pass_incorrect">Invalid credentials</string>
+    <string name="lbl_access_correct">Welcome</string>
+    <string name="lbl_incorrect_endpoint">Incorrect server url, use other QR code</string>
+    <string name="lbl_unauthorized_device">Unauthorized device</string>
+    <string name="lbl_sede_title">New server</string>
+
+    <!-- Face recognition welcome dialog -->
+    <string name="lbl_welcome_correct">Welcome</string>
+    <string name="lbl_welcome_name">Gerardo Gonzalez Garzon</string>
+    <string name="lbl_welcome_employee_number">123456789</string>
+    <string name="lbl_happy_birthday">¡Happy birthday!</string>
+    <string name="lebentechlogoContentDescription" translatable="false">lebentechLogo</string>
+    <string name="configButton" translatable="false">configButton</string>
+    <!-- - -->
+</resources>

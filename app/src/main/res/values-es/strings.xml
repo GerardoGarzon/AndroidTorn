@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lebentech</string>
+    <string name="lbl_notification_title">Proceso en ejecución</string>
+    <string name="lbl_notification_body">Ejecutando el proceso, selecciona la notificación para detenerlo</string>
+    <string name="textNoFaceDetected">Ningún rostro detectado</string>
+    <string name="lbl_login_title">Bienvenido</string>
+    <string name="lbl_title_user">Usuario</string>
+    <string name="lbl_title_password">Contraseña</string>
+    <string name="lbl_title_login">Iniciar sesión</string>
+    <string name="lbl_title_back">REGRESAR</string>
+    <string name="location_1">Torre GS</string>
+    <string name="lbl_title_url">URL</string>
+    <string name="lbl_android_id">Android ID: %s</string>
+    <string name="lbl_new_url">Nueva URL</string>
+    <string name="lbl_title_accept">Aceptar</string>
+    <string name="lbl_text_error">Ha ocurrido un error, reintente</string>
+    <string name="lbl_error_network">Sin red</string>
+    <string name="lbl_error_maintenance">En mantenimiento</string>
+    <string name="lbl_error_open_system">Problemas con el sistema de apertura</string>
+    <string name="lbl_error_server">Problemas con el servidor</string>
+    <string name="lbl_user_pass_incorrect">Usuario y/o contraseña invalidos</string>
+    <string name="lbl_access_correct">¡Bienvenido!</string>
+    <string name="lbl_incorrect_endpoint">La URL del servidor es incorrecta, escanea otro codigo QR</string>
+    <string name="lbl_unauthorized_device">Dispositivo no registrado</string>
+    <string name="lbl_sede_title">Nueva sede</string>
+    <string name="textFaceDetected">Rostro detectado, no te muevas</string>
+    <string name="textFaceTooFar">Te encuentras muy lejos, acercate</string>
+    <string name="textFaceTooClose">Alejate o centra el rostro</string>
+    <string name="textCenterFace">Centra tu rostro en el ovalo</string>
+    <string name="lbl_welcome_correct">Bienvenido</string>
+    <string name="lbl_welcome_name">Gerardo Gonzalez Garzon</string>
+    <string name="lbl_welcome_employee_number">123456789</string>
+    <string name="textNoCoincidences">Sin coincidencias, intenta de nuevo</string>
+    <string name="textErrorInDetection">Ocurrio un error, intenta de nuevo</string>
+    <string name="lbl_happy_birthday">¡ Feliz cumpleaños !</string>
+    <string name="textCorrectRecognition">Bienvenido</string>
+</resources>
