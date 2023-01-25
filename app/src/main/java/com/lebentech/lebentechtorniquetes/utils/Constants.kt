@@ -19,12 +19,9 @@ class Constants {
 
         // Alerts texts
         const val PERMISSIONS_ALERT_TITLE = "Permisos negados"
-        const val PERMISSIONS_LOCATION_ALERT_BODY =
-            "Accede a las configuraciones y otorga los permisos de ubicación a la Lebentech"
-        const val PERMISSIONS_NOTIFICATION_ALERT_BODY =
-            "Accede a las configuraciones y otorga los permisos de notificaciones a la Lebentech"
-        const val PERMISSIONS_CAMERA_ALERT_BODY =
-            "Accede a las configuraciones y otorga los permisos de acceso a la camara a la Lebentech"
+        const val PERMISSIONS_LOCATION_ALERT_BODY = "Accede a las configuraciones y otorga los permisos de ubicación a la Lebentech"
+        const val PERMISSIONS_NOTIFICATION_ALERT_BODY = "Accede a las configuraciones y otorga los permisos de notificaciones a la Lebentech"
+        const val PERMISSIONS_CAMERA_ALERT_BODY = "Accede a las configuraciones y otorga los permisos de acceso a la camara a la Lebentech"
         const val PERMISSIONS_ALERT_OPTION = "Ok"
 
         // LOGS
@@ -37,6 +34,7 @@ class Constants {
         const val ID_SEDE_KEY = "SEDE_KEY"
         const val SEDE_PRIORITY_ID = "PRIORITY_KEY"
         const val SEDE_NAME_KEY = "SEDE_NAME_KEY"
+        const val SERVER_ERROR_KEY = "SERVER_ERROR_KEY"
 
         // LOGIN PROCESS
         const val NOT_LOGGED_IN = 0
@@ -85,5 +83,9 @@ class Constants {
             R.raw.b_9,
             R.raw.b_10,
         )
+
+        // SERVER ERROR FLAG
+        const val SERVER_ERROR_ON = 1
+        const val SERVER_ERROR_OFF = 0
     }
 }

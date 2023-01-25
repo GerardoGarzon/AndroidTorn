@@ -79,6 +79,7 @@ open class BaseRepository {
                 Utils.setPrivatePreferences(Constants.ID_SEDE_KEY, idSede, context)
                 Utils.setPrivatePreferences(Constants.SEDE_NAME_KEY, sedeName, context)
                 Utils.setPrivatePreferences(Constants.SEDE_PRIORITY_ID, nextPriority, context)
+                Utils.setPrivatePreferences(Constants.SERVER_ERROR_KEY, Constants.SERVER_ERROR_OFF, context)
                 true
             } else {
                 false

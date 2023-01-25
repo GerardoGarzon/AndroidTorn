@@ -245,15 +245,20 @@ class LaunchScreenActivity : BaseActivity() {
         // Thread(runnable).start()
         // Start to monitoring the network status, if the connection is lost it will launch the
         // app status activity with the network error message and icon
-        // Thread(runnableNetworking).start()
+        Thread(runnableNetworking).start()
         sendLifeTest()
         SettingsViewModel.shared.loadPreferences()
         if ( !URLUtil.isValidUrl(SettingsViewModel.shared.serverEndpoint) ||
             Utils.getPrivatePreferences(this, Constants.TOKEN_KEY) == "" ||
             Utils.getPrivatePreferences(this, Constants.TOKEN_REFRESH_KEY) == "") {
-            resetDeviceInfo()
-            openSedeActivity(true, false, 0)
+            if (Utils.getPrivatePreferences(this, Constants.SERVER_ERROR_KEY, 1) == Constants.SERVER_ERROR_ON ) {
+                openAppStatusActivity(3)
+            } else {
+                resetDeviceInfo()
+                openSedeActivity(isFinish = true, startTimer = false, 0)
+            }
         } else {
+
             openRecognitionCamera()
         }
     }
