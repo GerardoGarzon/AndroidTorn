@@ -8,6 +8,7 @@ import android.content.Context
 import com.lebentech.lebentechtorniquetes.database.DatabaseHelper
 import com.lebentech.lebentechtorniquetes.interfaces.GeneralResponseListener
 import com.lebentech.lebentechtorniquetes.models.SedesModel
+import com.lebentech.lebentechtorniquetes.repositories.base.BaseRepository
 import com.lebentech.lebentechtorniquetes.retrofit.RequestManager
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.SedeResponse
@@ -17,8 +18,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SedesRepository {
-    fun sendAlternativesSedesRequest(listener: GeneralResponseListener, model: SedesModel, context: Context?) {
+class SedesRepository: BaseRepository() {
+    fun sendAlternativesSedesRequest(model: SedesModel, listener: GeneralResponseListener, context: Context) {
 
         val service = RequestManager.getClient(SettingsViewModel.shared.SERVER_ENDPOINT)
                                     .create(SedePriorityService::class.java)
@@ -31,15 +32,21 @@ class SedesRepository {
                         saveSedes(list, context)
                         listener.onSuccess()
                     } else {
-                        listener.onFailure()
+                        if ( !checkGeneralRetry(model, listener, context, ::sendAlternativesSedesRequest ) ) {
+                            listener.onFailure()
+                        }
                     }
                 } else {
-                    listener.onFailure()
+                    if ( !checkGeneralRetry(model, listener, context, ::sendAlternativesSedesRequest ) ) {
+                        listener.onFailure()
+                    }
                 }
             }
 
             override fun onFailure(call: Call<GeneralResponse<List<SedeResponse>>>, t: Throwable) {
-                listener.onFailure()
+                if ( !checkGeneralRetry(model, listener, context, ::sendAlternativesSedesRequest ) ) {
+                    listener.onFailure()
+                }
             }
         })
     }

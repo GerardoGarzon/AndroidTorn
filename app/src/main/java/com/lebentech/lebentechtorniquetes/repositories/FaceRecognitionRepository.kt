@@ -4,6 +4,7 @@
 
 package com.lebentech.lebentechtorniquetes.repositories
 
+import android.content.Context
 import com.lebentech.lebentechtorniquetes.interfaces.FaceRecognitionResponseListener
 import com.lebentech.lebentechtorniquetes.repositories.base.BaseRepository
 import com.lebentech.lebentechtorniquetes.retrofit.RequestManager
@@ -17,7 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FaceRecognitionRepository: BaseRepository() {
-    fun sendFaceRecognitionRequest(model: FaceRecognitionRequest, listener: FaceRecognitionResponseListener) {
+    fun sendFaceRecognitionRequest(model: FaceRecognitionRequest, listener: FaceRecognitionResponseListener, context: Context) {
 
         val service = RequestManager.getClient(SettingsViewModel.shared.SERVER_ENDPOINT)
             .create(FaceRecognitionService::class.java)
@@ -31,15 +32,21 @@ class FaceRecognitionRepository: BaseRepository() {
                         val employeeInfo = response.body()!!.data
                         listener.onSuccess(employeeInfo)
                     } else {
-                        listener.onFailure(407)
+                        if (!checkGeneralRetry(model, listener, context, ::sendFaceRecognitionRequest)) {
+                            listener.onFailure(407)
+                        }
                     }
                 } else {
-                    listener.onFailure(400)
+                    if (!checkGeneralRetry(model, listener, context, ::sendFaceRecognitionRequest)) {
+                        listener.onFailure(400)
+                    }
                 }
             }
 
             override fun onFailure( call: Call<GeneralResponse<EmployeeInfoResponse>>, t: Throwable) {
-                listener.onFailure(500)
+                if (!checkGeneralRetry(model, listener, context, ::sendFaceRecognitionRequest)) {
+                    listener.onFailure(500)
+                }
             }
         })
     }
