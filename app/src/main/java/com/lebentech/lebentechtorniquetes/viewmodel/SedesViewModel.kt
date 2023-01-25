@@ -18,8 +18,8 @@ class SedesViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getAlternativeSedes(model: SedesModel?) {
         repository.sendAlternativesSedesRequest(
-            listener!!,
             model!!,
+            listener!!,
             getApplication<Application>().applicationContext
         )
     }

@@ -42,7 +42,10 @@ class LaunchScreenActivity : BaseActivity() {
 
     // Services to run when the app starts
 
-    private val runnable: Runnable = Runnable {
+    /**
+     * Execute the service to delete the old logs in the device
+     */
+    private val runnableFileManager: Runnable = Runnable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (Environment.isExternalStorageManager()) {
                 FileManagerService.deleteOldRecords(this)
@@ -52,16 +55,26 @@ class LaunchScreenActivity : BaseActivity() {
         }
     }
 
+    /**
+     * Execute the service to auto run the application when it is closed or in foreground
+     */
     private val runnableMonitor: Runnable = Runnable {
         val intent = Intent(applicationContext, ForegroundServiceApp::class.java)
         startService(intent)
     }
 
+    /**
+     * Execute the life test service and recall it self to be sent each 3 minutes
+     */
     private val lifeTestRunnable: Runnable = Runnable {
         lifeTestViewModel.sendLifeTest()
         sendLifeTest()
     }
 
+    /**
+     * Execute the service that monitor the network and launch the app status activity when the
+     * device is offline
+     */
     private val runnableNetworking: Runnable = Runnable {
         configureNetworkManager()
     }
@@ -234,19 +247,12 @@ class LaunchScreenActivity : BaseActivity() {
      * camera
      */
     private fun startServices() {
-        /*
-         * Start background services
-         * 1.- App monitoring service
-         * 2.- Delete old records service
-        */
         if (!isServiceRunning(ForegroundServiceApp::class.java)) {
             // Thread(runnableMonitor).start()
         }
-        // Thread(runnable).start()
-        // Start to monitoring the network status, if the connection is lost it will launch the
-        // app status activity with the network error message and icon
-        // Thread(runnableNetworking).start()
-        sendLifeTest()
+        // Thread(runnableFileManager).start()
+        Thread(runnableNetworking).start()
+        // sendLifeTest()
         SettingsViewModel.shared.loadPreferences()
         if ( !URLUtil.isValidUrl(SettingsViewModel.shared.serverEndpoint) ||
             Utils.getPrivatePreferences(this, Constants.TOKEN_KEY) == "" ||
@@ -275,10 +281,16 @@ class LaunchScreenActivity : BaseActivity() {
         return false
     }
 
+    /**
+     * Start to send life test request each 3 minutes or the specific value in lifeTestMinutesPeriod
+     */
     private fun sendLifeTest() {
         Handler(Looper.getMainLooper()).postDelayed( lifeTestRunnable , (60000 * lifeTestMinutesPeriod).toLong())
     }
 
+    /**
+     * Set all the session and sedes flags with an empty string
+     */
     private fun resetDeviceInfo() {
         SettingsViewModel.shared.SERVER_ENDPOINT = ""
         Utils.setPrivatePreferences(

@@ -87,4 +87,17 @@ open class BaseRepository {
             return false
         }
     }
+
+    fun <T, S> checkGeneralRetry(model: T, listener: S, context: Context, function: (model: T, listener: S, context: Context) -> Unit ): Boolean {
+        if ( needRestart ) {
+            needRestart = false
+            while ( changeServerEndpoint(context) ) {
+                if ( sendAsyncDeviceLogin(context, nextPriority) ) {
+                    function(model, listener, context)
+                }
+            }
+            serverErrorListener.onServerError()
+        }
+        return false
+    }
 }

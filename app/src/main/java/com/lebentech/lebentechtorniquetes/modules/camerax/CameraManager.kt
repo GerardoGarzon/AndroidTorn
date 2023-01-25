@@ -137,7 +137,7 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
                     listener.onFailure(Constants.ERROR_IN_DETECTION)
                 }
             }
-        })
+        }, context)
 
     }
 }

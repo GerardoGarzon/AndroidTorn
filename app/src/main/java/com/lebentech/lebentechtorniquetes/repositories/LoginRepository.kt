@@ -46,12 +46,16 @@ class LoginRepository : BaseRepository() {
                         listener.onSuccess(minutes, code)
                     }
                 } else {
-                    checkRetry(model, listener, context)
+                    if (!checkGeneralRetry(model, listener, context, ::sendUserLoginRequest )) {
+                        listener.onFailure()
+                    }
                 }
             }
 
             override fun onFailure(call: Call<GeneralResponse<TokenResponse>>, t: Throwable) {
-                checkRetry(model, listener, context)
+                if (!checkGeneralRetry(model, listener, context, ::sendUserLoginRequest )) {
+                    listener.onFailure()
+                }
             }
         })
     }
