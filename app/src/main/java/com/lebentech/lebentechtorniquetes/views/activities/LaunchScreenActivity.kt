@@ -258,14 +258,31 @@ class LaunchScreenActivity : BaseActivity() {
             Utils.getPrivatePreferences(this, Constants.TOKEN_KEY) == "" ||
             Utils.getPrivatePreferences(this, Constants.TOKEN_REFRESH_KEY) == "") {
             if (Utils.getPrivatePreferences(this, Constants.SERVER_ERROR_KEY, 1) == Constants.SERVER_ERROR_ON ) {
-                openAppStatusActivity(3)
+                openNextActivity(0)
             } else {
                 resetDeviceInfo()
-                openSedeActivity(isFinish = true, startTimer = false, 0)
+                openNextActivity(1)
             }
         } else {
+            openNextActivity(2)
+        }
+    }
 
-            openRecognitionCamera()
+    private fun openNextActivity(index: Int) {
+        if (Utils.deviceHasInternet(this)) {
+            when (index) {
+                0 -> {
+                    openAppStatusActivity(3)
+                }
+                1 -> {
+                    openSedeActivity(isFinish = true, startTimer = false, 0)
+                }
+                2 -> {
+                    openRecognitionCamera()
+                }
+            }
+        } else {
+            openAppStatusActivity(1)
         }
     }
 
