@@ -257,9 +257,14 @@ class LaunchScreenActivity : BaseActivity() {
         if ( !URLUtil.isValidUrl(SettingsViewModel.shared.serverEndpoint) ||
             Utils.getPrivatePreferences(this, Constants.TOKEN_KEY) == "" ||
             Utils.getPrivatePreferences(this, Constants.TOKEN_REFRESH_KEY) == "") {
-            resetDeviceInfo()
-            openSedeActivity(true, false, 0)
+            if (Utils.getPrivatePreferences(this, Constants.SERVER_ERROR_KEY, 1) == Constants.SERVER_ERROR_ON ) {
+                openAppStatusActivity(3)
+            } else {
+                resetDeviceInfo()
+                openSedeActivity(isFinish = true, startTimer = false, 0)
+            }
         } else {
+
             openRecognitionCamera()
         }
     }

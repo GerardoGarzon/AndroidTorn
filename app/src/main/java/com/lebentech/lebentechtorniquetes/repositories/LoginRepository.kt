@@ -88,8 +88,7 @@ class LoginRepository : BaseRepository() {
 
         initiateLogin.enqueue(object : Callback<GeneralResponse<TokenResponse>> {
             override fun onResponse(call: Call<GeneralResponse<TokenResponse>>, response: Response<GeneralResponse<TokenResponse>>) {
-                if (response.isSuccessful) {
-                    assert(response.body() != null)
+                if (response.isSuccessful && response.body() != null) {
                     val code = response.body()!!.code
                     if (code == 200) {
                         val tokenJWT = response.body()!!.data.token
@@ -105,6 +104,7 @@ class LoginRepository : BaseRepository() {
                             Utils.setPrivatePreferences(Constants.ID_SEDE_KEY, idSede, context)
                             Utils.setPrivatePreferences(Constants.SEDE_NAME_KEY, sedeName, context)
                             Utils.setPrivatePreferences(Constants.SEDE_PRIORITY_ID, priority, context)
+                            Utils.setPrivatePreferences(Constants.SERVER_ERROR_KEY, Constants.SERVER_ERROR_OFF, context)
                             listener.onSuccess(code)
                         }
                     } else {

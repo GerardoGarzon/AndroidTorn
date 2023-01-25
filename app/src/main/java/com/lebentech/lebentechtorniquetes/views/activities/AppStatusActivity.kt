@@ -16,7 +16,7 @@ import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 class AppStatusActivity : BaseActivity() {
     private val screen: Screen = Screen(false, Constants.STATUS_ACTIVITY)
     private lateinit var binding: ActivityAppStatusBinding
-    private var viewModel: AppStatusViewModel? = null
+    private lateinit var viewModel: AppStatusViewModel
     private var actualStatus: Int = 0
     private var statusValues: Pair<String, String>? = null
 
@@ -39,7 +39,7 @@ class AppStatusActivity : BaseActivity() {
 
         val statusID: Int = intent.getIntExtra("appStatus", 0)
         actualStatus = statusID
-        statusValues = viewModel?.getAppStatusValues(statusID)
+        statusValues = viewModel.getAppStatusValues(statusID)
         val imageName = this.resources.getIdentifier(statusValues?.first, "raw", packageName)
         val stringName = this.resources.getIdentifier(statusValues?.second, "string", packageName)
 
@@ -54,6 +54,7 @@ class AppStatusActivity : BaseActivity() {
             binding.configButton.isVisible = false
         } else if (statusID == 3) {
             resetDeviceInfo()
+            viewModel.setServerErrorFlag()
             binding.statusImageView.speed = 1.0F
         }
 
