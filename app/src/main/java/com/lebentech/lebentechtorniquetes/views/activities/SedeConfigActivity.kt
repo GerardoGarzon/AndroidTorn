@@ -1,6 +1,7 @@
 package com.lebentech.lebentechtorniquetes.views.activities
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
@@ -54,7 +55,8 @@ class SedeConfigActivity : BaseActivity() {
 
         binding.acceptButton.setOnClickListener {
             if (SettingsViewModel.shared.serverEndpoint == "") {
-                openSedeActivity(isFinish = true, startTimer = false, minutes = 0)
+                Utils.createSnackBar(applicationContext, binding.lblWelcome ,applicationContext.getString(
+                    R.string.lbl_no_configured_sede), R.color.colorGolden)
             } else {
                 openRecognitionCamera()
             }
@@ -70,6 +72,17 @@ class SedeConfigActivity : BaseActivity() {
 
         Utils.createSnackBar(applicationContext, binding.lblWelcome ,applicationContext.getString(
             R.string.lbl_access_correct), R.color.colorGreen)
+    }
+
+    @SuppressLint("ResourceAsColor")
+    override fun onBackPressed() {
+        val text = binding.endpointEditText.text.toString()
+        if (text == "") {
+            Utils.createSnackBar(applicationContext, binding.lblWelcome ,applicationContext.getString(
+                R.string.lbl_no_configured_sede), R.color.colorGolden)
+        } else {
+            openRecognitionCamera()
+        }
     }
 
     /**

@@ -6,6 +6,7 @@
 
     <!-- Face recognition states -->
 
+    <string name="textStartingServices">Starting services</string>
     <string name="textNoFaceDetected">No face detected</string>
     <string name="textFaceDetected">Face detected, do not move</string>
     <string name="textFaceTooFar">Face too far</string>
@@ -35,6 +36,7 @@
     <string name="lbl_error_server">Server issues</string>
     <string name="lbl_user_pass_incorrect">Invalid credentials</string>
     <string name="lbl_access_correct">Welcome</string>
+    <string name="lbl_no_configured_sede">You must configure a site to continue</string>
     <string name="lbl_incorrect_endpoint">Incorrect server url, use other QR code</string>
     <string name="lbl_unauthorized_device">Unauthorized device</string>
     <string name="lbl_sede_title">New server</string>

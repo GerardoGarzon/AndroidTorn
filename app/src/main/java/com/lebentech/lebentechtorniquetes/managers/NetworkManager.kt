@@ -9,6 +9,7 @@ import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.util.Log
 import com.lebentech.lebentechtorniquetes.interfaces.NetworkListener
 
 class NetworkManager(context: Context, listener: NetworkListener) {
@@ -22,19 +23,25 @@ class NetworkManager(context: Context, listener: NetworkListener) {
         val networkCallback: NetworkCallback = object : NetworkCallback() {
             override fun onLost(network: Network) {
                 super.onLost(network)
+                Log.println(Log.INFO, "NetworkCallback", "On lost")
                 listener.onDisconnected()
             }
 
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
+                Log.println(Log.INFO, "NetworkCallback", "Available")
                 listener.onConnected()
+            }
+
+            override fun onUnavailable() {
+                super.onUnavailable()
+                Log.println(Log.INFO, "NetworkCallback", "Unavailable")
+                listener.onDisconnected()
             }
         }
 
-        val connectivityManager = context.getSystemService(
-            ConnectivityManager::class.java
-        ) as ConnectivityManager
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        connectivityManager.requestNetwork(networkRequest, networkCallback)
+        connectivityManager.registerDefaultNetworkCallback(networkCallback)
     }
 }

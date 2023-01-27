@@ -59,6 +59,10 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        openRecognitionCamera()
+    }
+
     @SuppressLint("ResourceAsColor")
     private fun configureViewModel() {
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]

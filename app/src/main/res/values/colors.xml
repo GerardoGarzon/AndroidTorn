@@ -52,4 +52,5 @@
     <color name="lbLightBlue">#32D6D0</color>
 
     <color name="transparent_dark">#A1000000</color>
+    <color name="colorHint">#B6B6B6</color>
 </resources>

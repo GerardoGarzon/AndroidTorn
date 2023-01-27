@@ -62,13 +62,4 @@ class AppStatusActivity : BaseActivity() {
             openSedeActivity(isFinish = true, startTimer = false, minutes = 0)
         }
     }
-
-    private fun resetDeviceInfo() {
-        SettingsViewModel.shared.SERVER_ENDPOINT = ""
-        Utils.setPrivatePreferences(Constants.TOKEN_KEY, "", this)
-        Utils.setPrivatePreferences(Constants.TOKEN_REFRESH_KEY, "", this)
-        Utils.setPrivatePreferences(Constants.ID_SEDE_KEY, "", this)
-        Utils.setPrivatePreferences(Constants.SEDE_PRIORITY_ID, "", this)
-        Utils.setPrivatePreferences(Constants.SEDE_NAME_KEY, "", this)
-    }
 }

@@ -6,14 +6,18 @@ package com.lebentech.lebentechtorniquetes.views.activities.base
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.webkit.URLUtil
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.lebentech.lebentechtorniquetes.interfaces.NetworkListener
 import com.lebentech.lebentechtorniquetes.managers.NetworkManager
 import com.lebentech.lebentechtorniquetes.models.Screen
 import com.lebentech.lebentechtorniquetes.utils.Constants
+import com.lebentech.lebentechtorniquetes.utils.Utils
+import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import com.lebentech.lebentechtorniquetes.views.activities.*
 
 abstract class BaseActivity: AppCompatActivity() {
@@ -100,14 +104,12 @@ abstract class BaseActivity: AppCompatActivity() {
 
     protected open fun openSedeActivity(isFinish: Boolean, startTimer: Boolean, minutes: Int) {
         val intent = Intent(this, SedeConfigActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra("startTimer", startTimer)
         if (startTimer) {
             intent.putExtra("setTimer", minutes)
         }
         startActivity(intent)
-        if (isFinish) {
-            finish()
-        }
     }
 
     protected open fun openQRScannerActivity() {
@@ -123,13 +125,65 @@ abstract class BaseActivity: AppCompatActivity() {
     protected open fun configureNetworkManager() {
         networkManager = NetworkManager(this, object : NetworkListener {
             override fun onConnected() {
-                openRecognitionCamera()
+                openInitialActivities()
             }
 
             override fun onDisconnected() {
                 openAppStatusActivity(Constants.APP_NETWORK_ERROR)
             }
         })
+
+        if ( !Utils.deviceHasInternet(applicationContext) ) {
+            openAppStatusActivity(Constants.APP_NETWORK_ERROR)
+        }
     }
 
+    /**
+     * Set all the session and sedes flags with an empty string
+     */
+    fun resetDeviceInfo() {
+        SettingsViewModel.shared.SERVER_ENDPOINT = ""
+        Utils.setPrivatePreferences(
+            Constants.TOKEN_KEY,
+            "",
+            this
+        )
+        Utils.setPrivatePreferences(
+            Constants.TOKEN_REFRESH_KEY,
+            "",
+            this
+        )
+        Utils.setPrivatePreferences(
+            Constants.ID_SEDE_KEY,
+            "",
+            this
+        )
+        Utils.setPrivatePreferences(
+            Constants.SEDE_PRIORITY_ID,
+            "",
+            this
+        )
+        Utils.setPrivatePreferences(
+            Constants.SEDE_NAME_KEY,
+            "",
+            this
+        )
+    }
+
+    fun openInitialActivities() {
+        val endpoint = SettingsViewModel.shared.serverEndpoint
+        val validURL = URLUtil.isValidUrl(endpoint)
+        val token = Utils.getPrivatePreferences(this, Constants.TOKEN_KEY)
+        val tokenRefresh = Utils.getPrivatePreferences(this, Constants.TOKEN_REFRESH_KEY)
+        val serverErrorFlag = Utils.getPrivatePreferences(this, Constants.SERVER_ERROR_KEY, 0)
+
+        if (serverErrorFlag == Constants.SERVER_ERROR_ON) {
+            openAppStatusActivity(Constants.APP_SERVER_ERROR)
+        } else if (endpoint == "" || !validURL || token == "" || tokenRefresh == "") {
+            resetDeviceInfo()
+            openSedeActivity(isFinish = true, startTimer = false, 0)
+        } else {
+            openRecognitionCamera()
+        }
+    }
 }

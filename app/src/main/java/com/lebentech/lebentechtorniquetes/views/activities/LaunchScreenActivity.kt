@@ -16,7 +16,6 @@ import android.Manifest
 import android.net.Uri
 import android.app.*
 import android.os.*
-import android.webkit.URLUtil
 import androidx.lifecycle.ViewModelProvider
 import com.lebentech.lebentechtorniquetes.interfaces.ServerErrorListener
 import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
@@ -34,6 +33,7 @@ class LaunchScreenActivity : BaseActivity() {
     private val REQUEST_OVERLAY_PERMISSIONS_CODE = 0
     private val REQUEST_CAMERA_PERMISSION_CODE = 200
 
+    private var isRequestingPermissions = true
     private val lifeTestMinutesPeriod = 1
 
     private val screen: Screen = Screen(true, Constants.LAUNCH_ACTIVITY)
@@ -97,11 +97,18 @@ class LaunchScreenActivity : BaseActivity() {
         BaseRepository.setServerErrorListener(object: ServerErrorListener {
             override fun onServerError() {
                 Utils.setPrivatePreferences(Constants.SEDE_PRIORITY_ID, 0, this@LaunchScreenActivity)
-                openAppStatusActivity(3)
+                openAppStatusActivity(Constants.APP_SERVER_ERROR)
             }
         })
 
         requestLocationPermission()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if ( !isRequestingPermissions ) {
+            finish()
+        }
     }
 
     /**
@@ -202,7 +209,7 @@ class LaunchScreenActivity : BaseActivity() {
 
     /**
      * Request the camera permissions if the device has not accepted yet, for android 11
-     * and newer it only request the persmissions twice
+     * and newer it only request the permissions twice
      */
     private fun requestCameraPermission() {
         ActivityCompat.requestPermissions(this, arrayOf( Manifest.permission.CAMERA ), REQUEST_CAMERA_PERMISSION_CODE)
@@ -247,6 +254,7 @@ class LaunchScreenActivity : BaseActivity() {
      * camera
      */
     private fun startServices() {
+        isRequestingPermissions = false
         if (!isServiceRunning(ForegroundServiceApp::class.java)) {
             // Thread(runnableMonitor).start()
         }
@@ -254,36 +262,6 @@ class LaunchScreenActivity : BaseActivity() {
         Thread(runnableNetworking).start()
         // sendLifeTest()
         SettingsViewModel.shared.loadPreferences()
-        if ( !URLUtil.isValidUrl(SettingsViewModel.shared.serverEndpoint) ||
-            Utils.getPrivatePreferences(this, Constants.TOKEN_KEY) == "" ||
-            Utils.getPrivatePreferences(this, Constants.TOKEN_REFRESH_KEY) == "") {
-            if (Utils.getPrivatePreferences(this, Constants.SERVER_ERROR_KEY, 1) == Constants.SERVER_ERROR_ON ) {
-                openNextActivity(0)
-            } else {
-                resetDeviceInfo()
-                openNextActivity(1)
-            }
-        } else {
-            openNextActivity(2)
-        }
-    }
-
-    private fun openNextActivity(index: Int) {
-        if (Utils.deviceHasInternet(this)) {
-            when (index) {
-                0 -> {
-                    openAppStatusActivity(3)
-                }
-                1 -> {
-                    openSedeActivity(isFinish = true, startTimer = false, 0)
-                }
-                2 -> {
-                    openRecognitionCamera()
-                }
-            }
-        } else {
-            openAppStatusActivity(1)
-        }
     }
 
     /**
@@ -308,37 +286,5 @@ class LaunchScreenActivity : BaseActivity() {
      */
     private fun sendLifeTest() {
         Handler(Looper.getMainLooper()).postDelayed( lifeTestRunnable , (60000 * lifeTestMinutesPeriod).toLong())
-    }
-
-    /**
-     * Set all the session and sedes flags with an empty string
-     */
-    private fun resetDeviceInfo() {
-        SettingsViewModel.shared.SERVER_ENDPOINT = ""
-        Utils.setPrivatePreferences(
-            Constants.TOKEN_KEY,
-            "",
-            this
-        )
-        Utils.setPrivatePreferences(
-            Constants.TOKEN_REFRESH_KEY,
-            "",
-            this
-        )
-        Utils.setPrivatePreferences(
-            Constants.ID_SEDE_KEY,
-            "",
-            this
-        )
-        Utils.setPrivatePreferences(
-            Constants.SEDE_PRIORITY_ID,
-            "",
-            this
-        )
-        Utils.setPrivatePreferences(
-            Constants.SEDE_NAME_KEY,
-            "",
-            this
-        )
     }
 }

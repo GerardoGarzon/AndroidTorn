@@ -36,7 +36,6 @@ class CameraActivity : BaseActivity() {
     /**
      * Activity base class implementation
      */
-
     override fun getViewBinding(): ViewBinding {
         if (!this::binding.isInitialized) {
             binding = ActivityCameraBinding.inflate(layoutInflater)
