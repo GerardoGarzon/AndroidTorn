@@ -44,7 +44,6 @@ open class BaseRepository {
             SettingsViewModel.shared.SERVER_ENDPOINT = sedes[0].sedeIP
             true
         } else {
-
             false
         }
     }
@@ -89,12 +88,18 @@ open class BaseRepository {
         }
     }
 
+    /**
+     * Check if there is other sede to send the request
+     * Return true if it find other sede and returns false if there is no other sede and it will
+     * open the server error activity
+     */
     fun <T, S> checkGeneralRetry(model: T, listener: S, context: Context, function: (model: T, listener: S, context: Context) -> Unit ): Boolean {
         if ( needRestart ) {
             needRestart = false
             while ( changeServerEndpoint(context) ) {
                 if ( sendAsyncDeviceLogin(context, nextPriority) ) {
                     function(model, listener, context)
+                    return true
                 }
             }
             serverErrorListener.onServerError()
@@ -102,3 +107,5 @@ open class BaseRepository {
         return false
     }
 }
+
+

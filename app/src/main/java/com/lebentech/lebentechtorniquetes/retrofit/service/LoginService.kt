@@ -6,6 +6,7 @@ package com.lebentech.lebentechtorniquetes.retrofit.service
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.TokenResponse
 import com.lebentech.lebentechtorniquetes.retrofit.request.UserBodyLoginRequest
+import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -21,6 +22,7 @@ interface LoginService {
         @Header("Authorization") auth: String,
         @Query("idDispositivo") idAndroid: String,
         @Query("origen") origin: String,
-        @Body body: UserBodyLoginRequest
+        @Body body: UserBodyLoginRequest,
+        @Query("charlesOrigen") charlesOrigin: String = SettingsViewModel.shared.SERVER_ENDPOINT
     ): Call<GeneralResponse<TokenResponse>>
 }

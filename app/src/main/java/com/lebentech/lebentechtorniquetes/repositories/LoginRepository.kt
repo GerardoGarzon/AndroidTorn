@@ -5,6 +5,8 @@
 package com.lebentech.lebentechtorniquetes.repositories
 
 import android.content.Context
+import android.util.Log
+import com.lebentech.lebentechtorniquetes.database.DatabaseHelper
 import com.lebentech.lebentechtorniquetes.interfaces.DeviceLoginRequestListener
 import com.lebentech.lebentechtorniquetes.interfaces.LoginRequestListener
 import com.lebentech.lebentechtorniquetes.repositories.base.BaseRepository
@@ -36,6 +38,8 @@ class LoginRepository : BaseRepository() {
             model.body
         )
 
+        Log.println(Log.INFO, "Login Req", SettingsViewModel.shared.SERVER_ENDPOINT)
+
         initiateLogin.enqueue(object : Callback<GeneralResponse<TokenResponse>> {
             override fun onResponse(call: Call<GeneralResponse<TokenResponse>>, response: Response<GeneralResponse<TokenResponse>>) {
                 if (response.isSuccessful) {
@@ -58,21 +62,6 @@ class LoginRepository : BaseRepository() {
                 }
             }
         })
-    }
-
-    fun checkRetry(model: UserLoginRequest, listener: LoginRequestListener, context: Context) {
-        if ( needRestart ) {
-            needRestart = false
-            while ( changeServerEndpoint(context) ) {
-                if ( sendAsyncDeviceLogin(context, nextPriority) ) {
-                    sendUserLoginRequest(model, listener, context)
-                }
-            }
-            serverErrorListener.onServerError()
-            listener.onFailure()
-        } else {
-            listener.onFailure()
-        }
     }
 
     fun sendDeviceLoginRequest(model: DeviceLoginRequest, listener: DeviceLoginRequestListener, priority: Int, context: Context) {
@@ -105,6 +94,10 @@ class LoginRepository : BaseRepository() {
                             Utils.setPrivatePreferences(Constants.SEDE_NAME_KEY, sedeName, context)
                             Utils.setPrivatePreferences(Constants.SEDE_PRIORITY_ID, priority, context)
                             Utils.setPrivatePreferences(Constants.SERVER_ERROR_KEY, Constants.SERVER_ERROR_OFF, context)
+
+                            val database = DatabaseHelper(context)
+                            database.deleteSedes()
+
                             listener.onSuccess(code)
                         }
                     } else {

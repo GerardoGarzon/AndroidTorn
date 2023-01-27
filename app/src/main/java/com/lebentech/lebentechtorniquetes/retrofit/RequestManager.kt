@@ -39,7 +39,7 @@ class RequestManager {
                 .addInterceptor(retrofitInterceptor)
                 .connectTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
-                // .proxy(proxy)
+                .proxy(proxy)
                 .build()
         }
     }

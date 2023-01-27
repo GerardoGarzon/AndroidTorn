@@ -96,7 +96,7 @@ class LaunchScreenActivity : BaseActivity() {
 
         BaseRepository.setServerErrorListener(object: ServerErrorListener {
             override fun onServerError() {
-                Utils.setPrivatePreferences(Constants.SEDE_PRIORITY_ID, 0, this@LaunchScreenActivity)
+                Utils.setPrivatePreferences(Constants.SEDE_PRIORITY_ID, 0, applicationContext)
                 openAppStatusActivity(Constants.APP_SERVER_ERROR)
             }
         })

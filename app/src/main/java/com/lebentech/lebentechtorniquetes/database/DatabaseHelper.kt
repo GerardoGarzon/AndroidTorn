@@ -78,6 +78,11 @@ class DatabaseHelper(context: Context?) :
         }
     }
 
+    fun deleteSedes() {
+        val db = this.writableDatabase
+        db.delete(SEDES_TABLE, null, null)
+    }
+
     companion object {
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "lebentech.db"
