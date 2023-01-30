@@ -18,14 +18,13 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         get() = getApplication<Application>().applicationContext
 
     var serverEndpoint: String
-        get() = shared.SERVER_ENDPOINT
+        get() = getPrivatePreferences(appContext, Constants.ENDPOINT_KEY)
         set(endpoint) {
-            shared.SERVER_ENDPOINT = endpoint
             setPrivatePreferences(Constants.ENDPOINT_KEY, endpoint, getApplication<Application>().applicationContext)
         }
 
     fun loadPreferences() {
-        shared.SERVER_ENDPOINT = getPrivatePreferences(
+        shared.serverEndpoint = getPrivatePreferences(
             appContext, Constants.ENDPOINT_KEY
         )
     }

@@ -21,7 +21,7 @@ import retrofit2.Response
 class SedesRepository: BaseRepository() {
     fun sendAlternativesSedesRequest(model: SedesModel, listener: GeneralResponseListener, context: Context) {
 
-        val service = RequestManager.getClient(SettingsViewModel.shared.SERVER_ENDPOINT)
+        val service = RequestManager.getClient(SettingsViewModel.shared.serverEndpoint)
                                     .create(SedePriorityService::class.java)
         val initiateSedes = service.sendSedePriorityRequest(model.token, model.idAndroid, model.idSede)
         initiateSedes.enqueue(object : Callback<GeneralResponse<List<SedeResponse>>> {

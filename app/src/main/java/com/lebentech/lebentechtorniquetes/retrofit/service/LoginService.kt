@@ -23,6 +23,6 @@ interface LoginService {
         @Query("idDispositivo") idAndroid: String,
         @Query("origen") origin: String,
         @Body body: UserBodyLoginRequest,
-        @Query("charlesOrigen") charlesOrigin: String = SettingsViewModel.shared.SERVER_ENDPOINT
+        @Query("charlesOrigen") charlesOrigin: String = SettingsViewModel.shared.serverEndpoint
     ): Call<GeneralResponse<TokenResponse>>
 }

@@ -96,7 +96,6 @@ abstract class BaseActivity: AppCompatActivity() {
 
     protected open fun openAppStatusActivity(index: Int) {
         val intent = Intent(this, AppStatusActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra("appStatus", index)
         startActivity(intent)
         finish()
@@ -142,7 +141,7 @@ abstract class BaseActivity: AppCompatActivity() {
      * Set all the session and sedes flags with an empty string
      */
     fun resetDeviceInfo() {
-        SettingsViewModel.shared.SERVER_ENDPOINT = ""
+        SettingsViewModel.shared.serverEndpoint = ""
         Utils.setPrivatePreferences(
             Constants.TOKEN_KEY,
             "",

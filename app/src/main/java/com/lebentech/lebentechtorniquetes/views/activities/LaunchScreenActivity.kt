@@ -256,7 +256,7 @@ class LaunchScreenActivity : BaseActivity() {
     private fun startServices() {
         isRequestingPermissions = false
         if (!isServiceRunning(ForegroundServiceApp::class.java)) {
-            // Thread(runnableMonitor).start()
+            Thread(runnableMonitor).start()
         }
         // Thread(runnableFileManager).start()
         Thread(runnableNetworking).start()

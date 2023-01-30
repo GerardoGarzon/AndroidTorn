@@ -34,25 +34,25 @@ open class BaseRepository {
         }
     }
 
-    fun changeServerEndpoint(context: Context): Boolean {
+    private fun changeServerEndpoint(context: Context): Boolean {
         val db = DatabaseHelper(context)
         val priority = Utils.getPrivatePreferences(context, Constants.SEDE_PRIORITY_ID, 0)
         val sedes = db.getSedes(priority)
 
         return if (sedes.isNotEmpty()) {
             nextPriority = sedes[0].idPriority
-            SettingsViewModel.shared.SERVER_ENDPOINT = sedes[0].sedeIP
+            SettingsViewModel.shared.serverEndpoint = sedes[0].sedeIP
             true
         } else {
             false
         }
     }
 
-    fun sendAsyncDeviceLogin(context: Context, nextPriority: Int): Boolean {
+    private fun sendAsyncDeviceLogin(context: Context, nextPriority: Int): Boolean {
         val policy = ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        val service = RequestManager.getClient(SettingsViewModel.shared.SERVER_ENDPOINT, true)
+        val service = RequestManager.getClient(SettingsViewModel.shared.serverEndpoint, true)
             .create(DeviceLoginService::class.java)
         val idAndroid = Utils.getAndroidID(context)
         val secretKey = Utils.getSha256(Constants.SECRET_KEY)?.lowercase(Locale.getDefault()) ?: ""

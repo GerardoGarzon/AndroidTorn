@@ -28,7 +28,7 @@ class LoginRepository : BaseRepository() {
 
     fun sendUserLoginRequest(model: UserLoginRequest, listener: LoginRequestListener, context: Context, isRetry: Boolean = false) {
 
-        val service = RequestManager.getClient(SettingsViewModel.shared.SERVER_ENDPOINT)
+        val service = RequestManager.getClient(SettingsViewModel.shared.serverEndpoint)
                                     .create(LoginService::class.java)
 
         val initiateLogin = service.sendLoginRequest(
@@ -37,8 +37,6 @@ class LoginRepository : BaseRepository() {
             Constants.DEVICE_ORIGIN,
             model.body
         )
-
-        Log.println(Log.INFO, "Login Req", SettingsViewModel.shared.SERVER_ENDPOINT)
 
         initiateLogin.enqueue(object : Callback<GeneralResponse<TokenResponse>> {
             override fun onResponse(call: Call<GeneralResponse<TokenResponse>>, response: Response<GeneralResponse<TokenResponse>>) {
@@ -65,7 +63,7 @@ class LoginRepository : BaseRepository() {
     }
 
     fun sendDeviceLoginRequest(model: DeviceLoginRequest, listener: DeviceLoginRequestListener, priority: Int, context: Context) {
-        val service = RequestManager.getClient(SettingsViewModel.shared.SERVER_ENDPOINT, true)
+        val service = RequestManager.getClient(SettingsViewModel.shared.serverEndpoint, true)
                                     .create(DeviceLoginService::class.java)
 
         val initiateLogin = service.sendDeviceRequest(

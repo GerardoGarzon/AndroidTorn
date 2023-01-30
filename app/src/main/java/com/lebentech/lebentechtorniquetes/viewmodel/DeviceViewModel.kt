@@ -40,7 +40,7 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application) 
     fun loginDevice(priority: Int) {
         progress.postValue(true)
 
-        if ( !URLUtil.isValidUrl(SettingsViewModel.shared.SERVER_ENDPOINT) ) {
+        if ( !URLUtil.isValidUrl(SettingsViewModel.shared.serverEndpoint) ) {
             resetDeviceInfo()
             listener.onFailure()
             progress.postValue(false)
@@ -89,7 +89,7 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun resetDeviceInfo() {
-        SettingsViewModel.shared.SERVER_ENDPOINT = ""
+        SettingsViewModel.shared.serverEndpoint = ""
         setPrivatePreferences(Constants.TOKEN_KEY, "", getApplication<Application>().applicationContext)
         setPrivatePreferences(Constants.TOKEN_REFRESH_KEY, "", getApplication<Application>().applicationContext)
         setPrivatePreferences(Constants.ID_SEDE_KEY, "", getApplication<Application>().applicationContext)

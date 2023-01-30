@@ -99,7 +99,7 @@ class RetrofitInterceptor constructor(context: Context) : Interceptor, Authentic
             )
 
             val androidID = Utils.getAndroidID(context)
-            val service = RequestManager.getClient(SettingsViewModel.shared.SERVER_ENDPOINT)
+            val service = RequestManager.getClient(SettingsViewModel.shared.serverEndpoint)
                                         .create(TokenRefreshService::class.java)
             val request = TokenRefreshRequest(
                 expiredToken,

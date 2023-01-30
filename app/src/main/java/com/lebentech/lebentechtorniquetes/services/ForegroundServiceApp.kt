@@ -4,6 +4,7 @@
 
 package com.lebentech.lebentechtorniquetes.services
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.*
 import android.app.ActivityManager.RunningAppProcessInfo
@@ -19,6 +20,8 @@ import android.os.IBinder
 import android.os.SystemClock
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.lebentech.lebentechtorniquetes.R
@@ -124,6 +127,16 @@ class ForegroundServiceApp : Service() {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .addAction(R.drawable.ic_exit, "Detener servicio", pendingIntent1)
             val notificationManagerCompat = NotificationManagerCompat.from(this)
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            }
             notificationManagerCompat.notify(1, builder.build())
             val intentFilter = IntentFilter()
             intentFilter.addAction("Detener servicio")
@@ -152,7 +165,7 @@ class ForegroundServiceApp : Service() {
 
     private fun launchApp() {
         val launchIntent = Intent(this, LaunchScreenActivity::class.java)
-        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(launchIntent)
     }
 

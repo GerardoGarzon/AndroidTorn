@@ -20,7 +20,7 @@ import retrofit2.Response
 class FaceRecognitionRepository: BaseRepository() {
     fun sendFaceRecognitionRequest(model: FaceRecognitionRequest, listener: FaceRecognitionResponseListener, context: Context) {
 
-        val service = RequestManager.getClient(SettingsViewModel.shared.SERVER_ENDPOINT)
+        val service = RequestManager.getClient(SettingsViewModel.shared.serverEndpoint)
             .create(FaceRecognitionService::class.java)
 
         val initiateRecognition = service.sendFaceRecognitionRequest(model)

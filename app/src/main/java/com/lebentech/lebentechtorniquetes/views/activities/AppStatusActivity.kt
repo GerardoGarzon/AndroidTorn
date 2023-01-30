@@ -31,6 +31,9 @@ class AppStatusActivity : BaseActivity() {
         return screen
     }
 
+    override fun onBackPressed() {
+    }
+
     @SuppressLint("DiscouragedApi")
     override fun prepareComponents() {
         hideActionBar()
