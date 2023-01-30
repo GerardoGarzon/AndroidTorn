@@ -15,12 +15,17 @@ import android.content.*
 import android.Manifest
 import android.net.Uri
 import android.app.*
+import android.app.admin.DevicePolicyManager
 import android.os.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.lebentech.lebentechtorniquetes.interfaces.ServerErrorListener
+import com.lebentech.lebentechtorniquetes.receivers.DeviceReceiver
 import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import com.lebentech.lebentechtorniquetes.repositories.base.BaseRepository
 import com.lebentech.lebentechtorniquetes.services.FileManagerService
+import com.lebentech.lebentechtorniquetes.utils.LogUtils
 import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.LifeTestViewModel
 
@@ -32,6 +37,7 @@ class LaunchScreenActivity : BaseActivity() {
     private val REQUEST_LOCATION_PERMISSIONS_CODE = 99
     private val REQUEST_OVERLAY_PERMISSIONS_CODE = 0
     private val REQUEST_CAMERA_PERMISSION_CODE = 200
+    private val REQUEST_DEVICE_ADMIN_PERMISSIONS_CODE = 1269553282
 
     private var isRequestingPermissions = true
     private val lifeTestMinutesPeriod = 1
@@ -39,6 +45,8 @@ class LaunchScreenActivity : BaseActivity() {
     private val screen: Screen = Screen(true, Constants.LAUNCH_ACTIVITY)
     private lateinit var binding: ActivityLaunchScreenBinding
     private lateinit var lifeTestViewModel: LifeTestViewModel
+
+    private var isRequestingAdminPermissions = false
 
     // Services to run when the app starts
 
@@ -157,7 +165,8 @@ class LaunchScreenActivity : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_OVERLAY_PERMISSIONS_CODE) {
+        if ( isRequestingAdminPermissions ) {
+            isRequestingAdminPermissions = false
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ) {
                 if (!Environment.isExternalStorageManager()) {
                     requestAllStoragePermission()
@@ -167,6 +176,8 @@ class LaunchScreenActivity : BaseActivity() {
             } else {
                 startServices()
             }
+        } else if (requestCode == REQUEST_OVERLAY_PERMISSIONS_CODE) {
+            adminDeviceApp()
         } else if (requestCode == REQUEST_ALL_STORAGE_PERMISSIONS_CODE) {
             startServices()
         }
@@ -247,6 +258,27 @@ class LaunchScreenActivity : BaseActivity() {
         val uri = Uri.fromParts("package", packageName, null)
         intent.data = uri
         startActivityForResult(intent, REQUEST_ALL_STORAGE_PERMISSIONS_CODE)
+    }
+
+    /**
+     * Launch an intent to request permissions to give administrator permissions to the app, it will
+     * allows to lock and unlock the device when it is needed
+     */
+    private fun adminDeviceApp() {
+        isRequestingAdminPermissions = true
+        val deviceManger = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        val componentName = ComponentName(this, DeviceReceiver::class.java)
+        val isAdminActive: Boolean = deviceManger.isAdminActive(componentName)
+
+        if (!isAdminActive) {
+            val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
+            val resultLauncher = registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()) {
+                LogUtils.printLog("Admin", "Device admin launched")
+            }
+            resultLauncher.launch(intent)
+        }
     }
 
     /**

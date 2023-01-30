@@ -70,11 +70,11 @@ class ForegroundServiceApp : Service() {
 
     override fun onTaskRemoved(rootIntent: Intent) {
         super.onTaskRemoved(rootIntent)
-        NotificationManagerCompat.from(this).cancelAll()
+        NotificationManagerCompat.from(applicationContext).cancelAll()
         val restartServiceIntent = Intent(applicationContext, this.javaClass)
         restartServiceIntent.setPackage(packageName)
         val restartServicePendingIntent = PendingIntent.getService(
-            applicationContext, 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT
+            applicationContext, 1, restartServiceIntent, PendingIntent.FLAG_IMMUTABLE
         )
         val alarmService = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
         alarmService[AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000] =
@@ -89,7 +89,7 @@ class ForegroundServiceApp : Service() {
     fun stopService() {
         timer.cancel()
         unregisterReceiver(broadcastReceiver)
-        stopService(Intent(this, ForegroundServiceApp::class.java))
+        stopService(Intent(applicationContext, ForegroundServiceApp::class.java))
     }
 
     @SuppressLint("LaunchActivityFromNotification")
@@ -111,12 +111,12 @@ class ForegroundServiceApp : Service() {
             intent.putExtra("RES", true)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             val pendingIntent1 = PendingIntent.getBroadcast(
-                this,
+                applicationContext,
                 1,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
             )
-            val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
+            val builder = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.ic_liveness)
                 .setContentTitle(title)
                 .setContentText(body)
@@ -126,8 +126,8 @@ class ForegroundServiceApp : Service() {
                 .setOngoing(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .addAction(R.drawable.ic_exit, "Detener servicio", pendingIntent1)
-            val notificationManagerCompat = NotificationManagerCompat.from(this)
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            val notificationManagerCompat = NotificationManagerCompat.from(applicationContext)
+            if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -151,8 +151,9 @@ class ForegroundServiceApp : Service() {
                     try {
                         if (!checkAppRunning()) {
                             Thread.sleep(5000)
-                            launchApp()
-                            Thread.sleep(5000)
+                            if (!checkAppRunning()) {
+                                launchApp()
+                            }
                         }
                     } catch (e: PackageManager.NameNotFoundException) {
                         e.printStackTrace()
@@ -164,7 +165,7 @@ class ForegroundServiceApp : Service() {
         }
 
     private fun launchApp() {
-        val launchIntent = Intent(this, LaunchScreenActivity::class.java)
+        val launchIntent = Intent(applicationContext, LaunchScreenActivity::class.java)
         launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(launchIntent)
     }
