@@ -46,7 +46,16 @@ class LoginActivity : BaseActivity() {
             val pass = binding.passField.text.toString()
 
             if (user.isNotBlank() && pass.isNotBlank()) {
-                viewModel.loginUser(user, pass)
+                if (Utils.verifyMaliciousString(user) || Utils.verifyMaliciousString(pass) || user.length > 8 || pass.length > 15) {
+                    Utils.createSnackBar(
+                        applicationContext,
+                        binding.root,
+                        applicationContext.getString(R.string.lbl_text_error),
+                        R.color.materialRed
+                    )
+                } else {
+                    viewModel.loginUser(user, pass)
+                }
             } else {
                 Utils.createSnackBar(
                     applicationContext,
@@ -61,6 +70,12 @@ class LoginActivity : BaseActivity() {
 
     override fun onBackPressed() {
         openRecognitionCamera()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.usrField.text?.clear()
+        binding.passField.text?.clear()
     }
 
     @SuppressLint("ResourceAsColor")

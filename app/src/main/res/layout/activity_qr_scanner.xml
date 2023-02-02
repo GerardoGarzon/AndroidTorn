@@ -15,6 +15,18 @@
         android:src="@drawable/lb_logo"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/backButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_back"
+        app:icon="@drawable/ic_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#00FFFFFF" />
+
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

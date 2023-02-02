@@ -1,33 +1,35 @@
 package com.lebentech.lebentechtorniquetes.views.activities
 
-import com.lebentech.lebentechtorniquetes.databinding.ActivityLaunchScreenBinding
-import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
-import com.lebentech.lebentechtorniquetes.services.ForegroundServiceApp
-import com.lebentech.lebentechtorniquetes.utils.Constants
-import com.lebentech.lebentechtorniquetes.models.Screen
-import android.content.pm.PackageManager
-import androidx.viewbinding.ViewBinding
-import androidx.core.app.ActivityCompat
-import android.annotation.SuppressLint
-import androidx.annotation.RequiresApi
-import android.provider.Settings
-import android.content.*
 import android.Manifest
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.app.*
 import android.app.admin.DevicePolicyManager
+import android.content.*
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.*
+import android.provider.Settings
 import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewbinding.ViewBinding
+import com.lebentech.lebentechtorniquetes.databinding.ActivityLaunchScreenBinding
 import com.lebentech.lebentechtorniquetes.interfaces.ServerErrorListener
+import com.lebentech.lebentechtorniquetes.models.Screen
 import com.lebentech.lebentechtorniquetes.receivers.DeviceReceiver
-import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import com.lebentech.lebentechtorniquetes.repositories.base.BaseRepository
 import com.lebentech.lebentechtorniquetes.services.FileManagerService
+import com.lebentech.lebentechtorniquetes.services.ForegroundServiceApp
+import com.lebentech.lebentechtorniquetes.utils.Constants
 import com.lebentech.lebentechtorniquetes.utils.LogUtils
 import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.LifeTestViewModel
+import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
+import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
 
 @SuppressLint("CustomSplashScreen")
 class LaunchScreenActivity : BaseActivity() {
@@ -37,7 +39,6 @@ class LaunchScreenActivity : BaseActivity() {
     private val REQUEST_LOCATION_PERMISSIONS_CODE = 99
     private val REQUEST_OVERLAY_PERMISSIONS_CODE = 0
     private val REQUEST_CAMERA_PERMISSION_CODE = 200
-    private val REQUEST_DEVICE_ADMIN_PERMISSIONS_CODE = 1269553282
 
     private var isRequestingPermissions = true
     private val lifeTestMinutesPeriod = 1
@@ -115,7 +116,7 @@ class LaunchScreenActivity : BaseActivity() {
     override fun onStop() {
         super.onStop()
         if ( !isRequestingPermissions ) {
-            finish()
+            finishAfterTransition()
         }
     }
 
@@ -129,17 +130,20 @@ class LaunchScreenActivity : BaseActivity() {
         if (requestCode == REQUEST_LOCATION_PERMISSIONS_CODE && grantResults.isNotEmpty()) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 createSettingsAlert(Constants.PERMISSIONS_LOCATION_ALERT_BODY, Constants.PERMISSIONS_ALERT_OPTION, Constants.PERMISSIONS_ALERT_TITLE)
+                return
             }
             requestNotificationPermissions()
         } else if (requestCode == REQUEST_NOTIFICATION_PERMISSION_CODE && grantResults.isNotEmpty()) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 createSettingsAlert(Constants.PERMISSIONS_NOTIFICATION_ALERT_BODY, Constants.PERMISSIONS_ALERT_OPTION, Constants.PERMISSIONS_ALERT_TITLE)
+                return
             } else {
                 requestCameraPermission()
             }
         } else if (requestCode == REQUEST_CAMERA_PERMISSION_CODE && grantResults.isNotEmpty()) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 createSettingsAlert(Constants.PERMISSIONS_CAMERA_ALERT_BODY, Constants.PERMISSIONS_ALERT_OPTION, Constants.PERMISSIONS_ALERT_TITLE)
+                return
             } else {
                 if (!Settings.canDrawOverlays(this)) {
                     requestOverlayPermission()
@@ -192,6 +196,7 @@ class LaunchScreenActivity : BaseActivity() {
         dialogBuilder.setMessage(bodyMessage)
             .setPositiveButton(alertOption) { _, _ ->
                 openAppSystemSettings()
+                finishAfterTransition()
             }
         val alert = dialogBuilder.create()
         alert.setTitle(alertTitle)
@@ -266,24 +271,25 @@ class LaunchScreenActivity : BaseActivity() {
      */
     private fun adminDeviceApp() {
         isRequestingAdminPermissions = true
+
         val deviceManger = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val componentName = ComponentName(this, DeviceReceiver::class.java)
         val isAdminActive: Boolean = deviceManger.isAdminActive(componentName)
 
-        if (!isAdminActive) {
+        if (isAdminActive) {
+            LogUtils.printLog("YES isAdminActive")
+        } else {
+            LogUtils.printLog("NO isAdminActive")
             val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
-            val resultLauncher = registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()) {
-                LogUtils.printLog("Admin", "Device admin launched")
-            }
-            resultLauncher.launch(intent)
+            startActivityForResult(intent, 1)
         }
     }
 
     /**
      * Start the services for files manager and autostart application, then it runs the recognition
      * camera
+     * First it verify if all the permissions are given
      */
     private fun startServices() {
         isRequestingPermissions = false

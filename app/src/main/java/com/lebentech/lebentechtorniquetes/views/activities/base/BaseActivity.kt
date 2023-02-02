@@ -85,20 +85,20 @@ abstract class BaseActivity: AppCompatActivity() {
     protected open fun openRecognitionCamera() {
         val intent = Intent(this, CameraActivity::class.java)
         startActivity(intent)
-        finish()
+        finishAfterTransition()
     }
 
     protected open fun openLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        finish()
+        finishAfterTransition()
     }
 
     protected open fun openAppStatusActivity(index: Int) {
         val intent = Intent(this, AppStatusActivity::class.java)
         intent.putExtra("appStatus", index)
         startActivity(intent)
-        finish()
+        finishAfterTransition()
     }
 
     protected open fun openSedeActivity(isFinish: Boolean, startTimer: Boolean, minutes: Int) {
@@ -109,6 +109,7 @@ abstract class BaseActivity: AppCompatActivity() {
             intent.putExtra("setTimer", minutes)
         }
         startActivity(intent)
+        finishAfterTransition()
     }
 
     protected open fun openQRScannerActivity() {

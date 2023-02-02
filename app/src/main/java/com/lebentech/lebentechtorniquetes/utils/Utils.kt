@@ -231,5 +231,13 @@ class Utils {
             }
             return false
         }
+
+        fun verifyMaliciousString(text: String): Boolean {
+            val patternURL = Regex("[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)")
+            val patterSQLSentence = Regex("((SELECT|DELETE|UPDATE|INSERT INTO) (\\*|[A-Z0-9_]+) (FROM) ([A-Z0-9_]+))( (WHERE) ([A-Z0-9_]+) (=|<|>|>=|<=|==|!=) (\\?|\\\$[A-Z]{1}[A-Z_]+)( (AND) ([A-Z0-9_]+) (=|<|>|>=|<=|==|!=) (\\?))?)?")
+
+            return  patternURL.containsMatchIn(text) ||
+                    patterSQLSentence.containsMatchIn(text)
+        }
     }
 }

@@ -37,4 +37,5 @@
     <string name="lbl_happy_birthday">¡ Feliz cumpleaños !</string>
     <string name="textCorrectRecognition">Bienvenido</string>
     <string name="lbl_no_configured_sede">Debes configurar una sede para continuar</string>
+    <string name="lbl_back">Atras</string>
 </resources>

@@ -50,11 +50,15 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginHorizontal="50dp"
             android:layout_marginVertical="20dp"
-            app:boxStrokeColor="@color/text_input_layout_stroke_color">
+            app:boxStrokeColor="@color/text_input_layout_stroke_color"
+            app:counterEnabled="true"
+            app:counterMaxLength="8">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/usr_field"
-                android:text="10040496"
+                android:maxLines="1"
+                android:inputType="text"
+                android:maxLength="8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorWhite"/>
@@ -77,11 +81,14 @@
             android:layout_marginVertical="20dp"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorWhite"
-            app:boxStrokeColor="@color/text_input_layout_stroke_color">
+            app:boxStrokeColor="@color/text_input_layout_stroke_color"
+            app:counterEnabled="true"
+            app:counterMaxLength="15">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pass_field"
-                android:text="10040496_Ge"
+                android:maxLines="1"
+                android:maxLength="15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"

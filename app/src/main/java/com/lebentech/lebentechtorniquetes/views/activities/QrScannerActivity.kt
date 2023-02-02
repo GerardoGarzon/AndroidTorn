@@ -36,12 +36,16 @@ class QrScannerActivity : BaseActivity() {
                 val endpointConverted = Utils.getBase64String(qrScanned)
                 SettingsViewModel.shared.serverEndpoint = endpointConverted
                 SedeConfigActivity.listener.onCaptured()
-                finish()
+                finishAfterTransition()
             }
         }
 
         binding.switchButton.setOnClickListener {
             cameraManager?.switchCamera()
+        }
+
+        binding.backButton.setOnClickListener {
+            finishAfterTransition()
         }
     }
 

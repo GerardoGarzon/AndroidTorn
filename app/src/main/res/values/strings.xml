@@ -48,5 +48,6 @@
     <string name="lbl_happy_birthday">¡Happy birthday!</string>
     <string name="lebentechlogoContentDescription" translatable="false">lebentechLogo</string>
     <string name="configButton" translatable="false">configButton</string>
+    <string name="lbl_back">Back</string>
     <!-- - -->
 </resources>
