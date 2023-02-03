@@ -47,12 +47,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 override fun onSuccess(timer: Int, code: Int) {
                     inProgress.postValue(false)
                     minutesTimer.postValue(timer)
-                    if (code == 200) {
-                        loginProcess.postValue(Constants.LOGGED_IN)
-                    } else if (code == 404) {
-                        loginProcess.postValue(Constants.UNAUTHORIZED_DEVICE)
-                    } else if (code == 0) {
-                        loginProcess.postValue(Constants.ERROR_IN_LOGIN)
+                    when (code) {
+                        200 -> {
+                            loginProcess.postValue(Constants.LOGGED_IN)
+                        }
+                        404 -> {
+                            loginProcess.postValue(Constants.UNAUTHORIZED_DEVICE)
+                        }
+                        0 -> {
+                            loginProcess.postValue(Constants.ERROR_IN_LOGIN)
+                        }
                     }
                 }
 

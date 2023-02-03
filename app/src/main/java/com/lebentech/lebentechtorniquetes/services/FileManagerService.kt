@@ -5,6 +5,9 @@ package com.lebentech.lebentechtorniquetes.services
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
+import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -18,10 +21,10 @@ class FileManagerService {
          */
         @SuppressLint("SimpleDateFormat")
         fun deleteOldRecords(context: Context) {
-            val mediaDirs = context.externalMediaDirs
+            val mediaDirs = context.getExternalFilesDirs(null)
             val mediaDir = mediaDirs[0]
             val rootPath = File(mediaDir, "Lebentech")
-            val appPath = File(rootPath, "LebentechTorniquetes")
+            val appPath = File(rootPath, "Torniquetes")
             val containerPath = File(appPath, "Requests")
             val list = containerPath.listFiles()
             if (list != null) {
@@ -43,7 +46,7 @@ class FileManagerService {
          * if the difference is 15 days it will delete the log
          */
         @SuppressLint("SimpleDateFormat")
-        fun daysBetweenDates(date1: String?, date2: String?): Int {
+        fun daysBetweenDates(date1: String, date2: String): Int {
             var diffDays = 0
             try {
                 val dates = SimpleDateFormat("yyyy-MM-dd")

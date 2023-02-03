@@ -9,8 +9,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -35,9 +33,7 @@ import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
 class LaunchScreenActivity : BaseActivity() {
 
     private val REQUEST_NOTIFICATION_PERMISSION_CODE = 123
-    private val REQUEST_ALL_STORAGE_PERMISSIONS_CODE = 1
     private val REQUEST_LOCATION_PERMISSIONS_CODE = 99
-    private val REQUEST_OVERLAY_PERMISSIONS_CODE = 0
     private val REQUEST_CAMERA_PERMISSION_CODE = 200
 
     private var isRequestingPermissions = true
@@ -48,8 +44,6 @@ class LaunchScreenActivity : BaseActivity() {
     private lateinit var lifeTestViewModel: LifeTestViewModel
 
     private var isRequestingAdminPermissions = false
-
-    // Services to run when the app starts
 
     /**
      * Execute the service to delete the old logs in the device
@@ -163,31 +157,6 @@ class LaunchScreenActivity : BaseActivity() {
     }
 
     /**
-     * Manage the activities permissions views, when the activity is finished it will return the request code and it will perform
-     * the next task
-     */
-    @RequiresApi(Build.VERSION_CODES.R)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if ( isRequestingAdminPermissions ) {
-            isRequestingAdminPermissions = false
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ) {
-                if (!Environment.isExternalStorageManager()) {
-                    requestAllStoragePermission()
-                } else {
-                    startServices()
-                }
-            } else {
-                startServices()
-            }
-        } else if (requestCode == REQUEST_OVERLAY_PERMISSIONS_CODE) {
-            adminDeviceApp()
-        } else if (requestCode == REQUEST_ALL_STORAGE_PERMISSIONS_CODE) {
-            startServices()
-        }
-    }
-
-    /**
      * Create a custom alert that opens the app settings on the system configuration
      */
     private fun createSettingsAlert(bodyMessage: String, alertOption: String, alertTitle: String) {
@@ -220,7 +189,8 @@ class LaunchScreenActivity : BaseActivity() {
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(this,
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            REQUEST_LOCATION_PERMISSIONS_CODE)
+            REQUEST_LOCATION_PERMISSIONS_CODE
+        )
     }
 
     /**
@@ -228,7 +198,10 @@ class LaunchScreenActivity : BaseActivity() {
      * and newer it only request the permissions twice
      */
     private fun requestCameraPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf( Manifest.permission.CAMERA ), REQUEST_CAMERA_PERMISSION_CODE)
+        ActivityCompat.requestPermissions(this,
+            arrayOf( Manifest.permission.CAMERA ),
+            REQUEST_CAMERA_PERMISSION_CODE
+        )
     }
 
     /**
@@ -236,7 +209,10 @@ class LaunchScreenActivity : BaseActivity() {
      */
     private fun requestNotificationPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATION_PERMISSION_CODE )
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                REQUEST_NOTIFICATION_PERMISSION_CODE
+            )
         } else {
             requestCameraPermission()
         }
@@ -244,14 +220,13 @@ class LaunchScreenActivity : BaseActivity() {
 
     /**
      * Request permissions to display the application over the other apps when it is needed
-     * There are two intents in case that the device is manufactured by Xiaomi
      */
     private fun requestOverlayPermission() {
         val intent = Intent(
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
             Uri.parse("package:$packageName")
         )
-        startActivityForResult(intent, REQUEST_OVERLAY_PERMISSIONS_CODE)
+        overlayActivityResult.launch(intent)
     }
 
     /**
@@ -262,7 +237,7 @@ class LaunchScreenActivity : BaseActivity() {
         val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
         val uri = Uri.fromParts("package", packageName, null)
         intent.data = uri
-        startActivityForResult(intent, REQUEST_ALL_STORAGE_PERMISSIONS_CODE)
+        storageActivityResult.launch(intent)
     }
 
     /**
@@ -282,7 +257,7 @@ class LaunchScreenActivity : BaseActivity() {
             LogUtils.printLog("NO isAdminActive")
             val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
-            startActivityForResult(intent, 1)
+            adminActivityResult.launch(intent)
         }
     }
 
@@ -296,9 +271,9 @@ class LaunchScreenActivity : BaseActivity() {
         if (!isServiceRunning(ForegroundServiceApp::class.java)) {
             Thread(runnableMonitor).start()
         }
-        // Thread(runnableFileManager).start()
+        Thread(runnableFileManager).start()
         Thread(runnableNetworking).start()
-        // sendLifeTest()
+        sendLifeTest()
         SettingsViewModel.shared.loadPreferences()
     }
 
@@ -324,5 +299,38 @@ class LaunchScreenActivity : BaseActivity() {
      */
     private fun sendLifeTest() {
         Handler(Looper.getMainLooper()).postDelayed( lifeTestRunnable , (60000 * lifeTestMinutesPeriod).toLong())
+    }
+
+    /**
+     * Manage the result for the admin device activity result
+     */
+    private val adminActivityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+        isRequestingAdminPermissions = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ) {
+            if (!Environment.isExternalStorageManager()) {
+                requestAllStoragePermission()
+            } else {
+                startServices()
+            }
+        } else {
+            startServices()
+        }
+    }
+
+    /**
+     * Manage the result for the overlay activity result
+     */
+    private val overlayActivityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+        adminDeviceApp()
+    }
+
+    /**
+     * Manage the result for the storage activity result
+     */
+    private val storageActivityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+        startServices()
     }
 }

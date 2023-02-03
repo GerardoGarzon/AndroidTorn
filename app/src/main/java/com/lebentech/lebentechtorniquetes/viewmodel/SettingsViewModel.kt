@@ -12,8 +12,6 @@ import com.lebentech.lebentechtorniquetes.utils.Utils.Companion.setPrivatePrefer
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
-    var SERVER_ENDPOINT = Constants.EMPTY_STRING
-
     private val appContext: Context
         get() = getApplication<Application>().applicationContext
 

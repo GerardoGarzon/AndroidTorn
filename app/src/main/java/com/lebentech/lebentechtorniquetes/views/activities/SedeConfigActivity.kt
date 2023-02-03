@@ -1,7 +1,6 @@
 package com.lebentech.lebentechtorniquetes.views.activities
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings

@@ -9,9 +9,7 @@ import com.lebentech.lebentechtorniquetes.databinding.ActivityAppStatusBinding
 import com.lebentech.lebentechtorniquetes.models.Screen
 import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
 import com.lebentech.lebentechtorniquetes.utils.Constants
-import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.AppStatusViewModel
-import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 
 class AppStatusActivity : BaseActivity() {
     private val screen: Screen = Screen(false, Constants.STATUS_ACTIVITY)
