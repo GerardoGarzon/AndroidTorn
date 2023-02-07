@@ -98,7 +98,8 @@
                 android:layout_margin="10dp"
                 android:text="@string/lbl_new_url"
                 android:textColor="@color/colorWhite"
-                android:backgroundTint="@color/lbDarkBlue"/>
+                android:backgroundTint="@color/lbDarkBlue"
+                style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ProgressBar

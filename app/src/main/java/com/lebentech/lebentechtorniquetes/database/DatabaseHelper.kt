@@ -9,8 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.SedeResponse
 
-class DatabaseHelper(context: Context?) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     /**
      * Create the new table for the sedes information, if the table already exists it will not be
      * modified
@@ -78,11 +77,17 @@ class DatabaseHelper(context: Context?) :
         }
     }
 
+    /**
+     * When a new sede is configured it will Jajajaerase the old records of sede priorities
+     */
     fun deleteSedes() {
         val db = this.writableDatabase
         db.delete(SEDES_TABLE, null, null)
     }
 
+    /**
+     * Database name and table name
+     */
     companion object {
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "lebentech.db"

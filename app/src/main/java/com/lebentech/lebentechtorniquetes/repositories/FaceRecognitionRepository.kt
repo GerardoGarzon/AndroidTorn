@@ -32,9 +32,7 @@ class FaceRecognitionRepository: BaseRepository() {
                         val employeeInfo = response.body()!!.data
                         listener.onSuccess(employeeInfo)
                     } else {
-                        if (!checkGeneralRetry(model, listener, context, ::sendFaceRecognitionRequest)) {
-                            listener.onFailure(407)
-                        }
+                        listener.onFailure(407)
                     }
                 } else {
                     if (!checkGeneralRetry(model, listener, context, ::sendFaceRecognitionRequest)) {

@@ -7,6 +7,7 @@ package com.lebentech.lebentechtorniquetes.modules.camerax
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
@@ -91,8 +92,8 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
     fun takePhoto(listener: PhotoTakenListener) {
         Handler(Looper.getMainLooper()).postDelayed({
             imageCapture?.let {
-                val externalMediaDirs = context.getExternalFilesDirs(null)
-                val file = File(externalMediaDirs[0],"FR_IMAGE.jpeg")
+                val externalMediaDirs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                val file = File(externalMediaDirs,"FR_IMAGE.jpeg")
 
                 val outputFileOptions = ImageCapture.OutputFileOptions
                     .Builder(file)

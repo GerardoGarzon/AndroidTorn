@@ -5,9 +5,7 @@ package com.lebentech.lebentechtorniquetes.services
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
-import android.provider.MediaStore
-import androidx.annotation.RequiresApi
+import android.os.Environment
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -21,9 +19,8 @@ class FileManagerService {
          */
         @SuppressLint("SimpleDateFormat")
         fun deleteOldRecords(context: Context) {
-            val mediaDirs = context.getExternalFilesDirs(null)
-            val mediaDir = mediaDirs[0]
-            val rootPath = File(mediaDir, "Lebentech")
+            val mediaDirs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            val rootPath = File(mediaDirs, "Lebentech")
             val appPath = File(rootPath, "Torniquetes")
             val containerPath = File(appPath, "Requests")
             val list = containerPath.listFiles()

@@ -13,7 +13,6 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface TokenRefreshService {
-
     @Headers(
         "Content-Type: application/json",
         "Accept: application/json",

@@ -14,6 +14,8 @@ import com.lebentech.lebentechtorniquetes.utils.LogUtils
 import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import okhttp3.*
+import okhttp3.Interceptor.Chain
+import java.io.IOException
 
 class RetrofitInterceptor constructor(context: Context) : Interceptor, Authenticator {
 
@@ -32,38 +34,59 @@ class RetrofitInterceptor constructor(context: Context) : Interceptor, Authentic
      * count, if the error count is equals to 3 it will change the server endpoint and restart the
      * process
      */
-    override fun intercept(chain: Interceptor.Chain): Response {
+    override fun intercept(chain: Chain): Response {
         val writerManager = WriterManager()
         var countErrors = 0
         val startTimeNs = System.nanoTime()
         val request = chain.request()
-        var response = chain.proceed(request)
-        var endTimeNS = System.nanoTime()
+        var endTimeNS: Long
+        var response: Response? = null
+        var exceptionResponse = ""
 
-        if (response.isSuccessful) {
-            return response
-        } else {
-            writerManager.createErrorLog(request, response, startTimeNs, endTimeNS)
-            while ( countErrors < 3 || response.isSuccessful) {
-                try {
-                    response = chain.proceed(request)
-                    endTimeNS = System.nanoTime()
-                    if (response.isSuccessful) {
-                        break
-                    } else {
-                        writerManager.createErrorLog(request, response, startTimeNs, endTimeNS)
+        try {
+            response = chain.proceed(request)
+            endTimeNS = System.nanoTime()
+        } catch (ex: IOException) {
+            exceptionResponse = ex.stackTraceToString()
+            endTimeNS = System.nanoTime()
+        }
+
+        if (response != null) {
+            if (response.isSuccessful) {
+                return response
+            } else {
+                writerManager.createErrorLog(request, response, startTimeNs, endTimeNS, null)
+                while ( countErrors < 3 || response!!.isSuccessful) {
+                    try {
+                        response = chain.proceed(request)
+                        endTimeNS = System.nanoTime()
+                        if (response.isSuccessful) {
+                            break
+                        } else {
+                            writerManager.createErrorLog(request, response, startTimeNs, endTimeNS, null)
+                        }
+                    } catch (ex: Exception) {
+                        LogUtils.printLogError("Interceptor", ex.localizedMessage ?: "", ex)
                     }
-                } catch (ex: Exception) {
-                    LogUtils.printLogError("Interceptor", ex.localizedMessage ?: "", ex)
+                    countErrors += 1
                 }
-                countErrors += 1
-            }
 
-            if (countErrors == 3 && !response.isSuccessful) {
-                BaseRepository.activateServerFlag()
-            }
+                if (countErrors == 3 && !response!!.isSuccessful) {
+                    BaseRepository.activateServerFlag()
+                }
 
-            return response
+                return response!!
+            }
+        } else {
+            writerManager.createErrorLog(request, null, startTimeNs, endTimeNS, exceptionResponse)
+            BaseRepository.activateServerFlag()
+            return Response.Builder()
+                .request(request)
+                .protocol(Protocol.HTTP_1_1)
+                .code(500)
+                .message(exceptionResponse)
+                .body(ResponseBody.create(null, "{error:$exceptionResponse}"))
+                .build()
         }
     }
 

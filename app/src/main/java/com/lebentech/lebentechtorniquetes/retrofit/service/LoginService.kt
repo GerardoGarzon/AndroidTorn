@@ -11,7 +11,6 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface LoginService {
-
     @Headers(
         "Content-Type: application/json",
         "Accept: application/json",

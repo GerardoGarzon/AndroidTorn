@@ -7,18 +7,17 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
 import android.util.Log
 import com.lebentech.lebentechtorniquetes.interfaces.NetworkListener
 
 class NetworkManager(context: Context, listener: NetworkListener) {
-    private var networkRequest: NetworkRequest = NetworkRequest.Builder()
-        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-        .build()
-
+    /**
+     * It will monitor the devices network and it will call the listener when an event is
+     * launched, when the device is offline it will launch the app status activity with the network
+     * error message
+     * When the connection is back it will open the initial activities to open the activity depending
+     * on the sede configuration
+     */
     init {
         val networkCallback: NetworkCallback = object : NetworkCallback() {
             override fun onLost(network: Network) {
@@ -41,7 +40,6 @@ class NetworkManager(context: Context, listener: NetworkListener) {
         }
 
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
     }
 }

@@ -1,3 +1,7 @@
+/**
+ * Created by Gerardo Garzon on 16/01/23.
+ */
+
 package com.lebentech.lebentechtorniquetes.viewmodel
 
 import android.app.Application
@@ -15,9 +19,6 @@ import com.lebentech.lebentechtorniquetes.retrofit.reponses.EmployeeInfoResponse
 import com.lebentech.lebentechtorniquetes.utils.Constants
 import java.util.concurrent.Executors
 
-/**
- * Created by Gerardo Garzon on 16/01/23.
- */
 class CameraRecognitionViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
@@ -139,7 +140,6 @@ class CameraRecognitionViewModel(application: Application) : AndroidViewModel(ap
             override fun photoTaken() {
                 recognitionState.postValue(Constants.PHOTO_TAKEN)
             }
-
         })
     }
 }

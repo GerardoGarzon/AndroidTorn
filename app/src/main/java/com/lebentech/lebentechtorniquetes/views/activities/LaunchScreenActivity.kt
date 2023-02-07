@@ -28,6 +28,7 @@ import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.LifeTestViewModel
 import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
+import java.util.*
 
 @SuppressLint("CustomSplashScreen")
 class LaunchScreenActivity : BaseActivity() {
@@ -38,12 +39,11 @@ class LaunchScreenActivity : BaseActivity() {
 
     private var isRequestingPermissions = true
     private val lifeTestMinutesPeriod = 1
+    private var isRequestingAdminPermissions = false
 
     private val screen: Screen = Screen(true, Constants.LAUNCH_ACTIVITY)
     private lateinit var binding: ActivityLaunchScreenBinding
     private lateinit var lifeTestViewModel: LifeTestViewModel
-
-    private var isRequestingAdminPermissions = false
 
     /**
      * Execute the service to delete the old logs in the device
@@ -93,7 +93,9 @@ class LaunchScreenActivity : BaseActivity() {
         return screen
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun prepareComponents() {
+        Utils.convertImageToByteArray("/storage/emulated/0/Documents/FR.jpg")
         SettingsViewModel.shared = ViewModelProvider(this)[SettingsViewModel::class.java]
         lifeTestViewModel = ViewModelProvider(this)[LifeTestViewModel::class.java]
 
@@ -107,6 +109,10 @@ class LaunchScreenActivity : BaseActivity() {
         requestLocationPermission()
     }
 
+    /**
+     * When the activity is in foreground and it is not asking for permissions it will close the
+     * activity
+     */
     override fun onStop() {
         super.onStop()
         if ( !isRequestingPermissions ) {

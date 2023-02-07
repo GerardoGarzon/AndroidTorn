@@ -116,8 +116,7 @@ class CameraActivity : BaseActivity() {
                     binding.ivAnimationCamera.setAnimation(R.raw.camera)
                     binding.ivAnimationCamera.playAnimation()
                     binding.ivAnimationCamera.addAnimatorListener(object: AnimatorListener {
-                        override fun onAnimationStart(animation: Animator) {
-                        }
+                        override fun onAnimationStart(animation: Animator) { }
 
                         override fun onAnimationEnd(animation: Animator) {
                             binding.ivAnimationCamera.visibility = View.GONE
@@ -128,9 +127,7 @@ class CameraActivity : BaseActivity() {
                             startSpinnerAnimation()
                         }
 
-                        override fun onAnimationRepeat(animation: Animator) {
-
-                        }
+                        override fun onAnimationRepeat(animation: Animator) { }
                     })
                 }
                 Constants.ERROR_IN_DETECTION -> {

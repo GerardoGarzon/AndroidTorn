@@ -3,6 +3,7 @@
  */
 package com.lebentech.lebentechtorniquetes.managers
 
+import android.os.Environment
 import com.google.gson.GsonBuilder
 import com.lebentech.lebentechtorniquetes.LebentechApplication
 import okhttp3.Request
@@ -12,16 +13,20 @@ import java.util.*
 
 class WriterManager {
 
-    fun createErrorLog(request: Request, response: okhttp3.Response, timeStart: Long, timeFinish: Long) {
+    /**
+     * Create an error log in the Android application data folder
+     * It will contain the path of the request and the information from the error response
+     */
+    fun createErrorLog(request: Request, response: okhttp3.Response?, timeStart: Long, timeFinish: Long, exception: String?) {
         val organizationName = "Lebentech"
         val projectName = "Torniquetes"
         val context = LebentechApplication.appContext
 
-        val mediaDirs = context.getExternalFilesDirs(null)
-        if (mediaDirs.isEmpty()) {
+        val mediaDirs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        if (mediaDirs == null) {
             return
         } else {
-            val organizationDir = File(mediaDirs[0], organizationName)
+            val organizationDir = File(mediaDirs, organizationName)
             val projectDir = File(organizationDir, projectName)
             val requestsLogsDir = File(projectDir, "Requests")
 
@@ -50,15 +55,19 @@ class WriterManager {
 
                 // RESPONSE
                 writeTitle("Response", logFile)
-                writeLog("Response code: ${response.code()}", logFile)
+                if (response != null) {
+                    writeLog("Response code: ${response.code()}", logFile)
 
-                if (response.body() != null) {
-                    val gson = GsonBuilder().setPrettyPrinting().create()
-                    val json = gson.toJson(response.body())
+                    if (response.body() != null) {
+                        val gson = GsonBuilder().setPrettyPrinting().create()
+                        val json = gson.toJson(response.body())
 
-                    writeLog("Response body: $json", logFile)
+                        writeLog("Response body: $json", logFile)
+                    } else {
+                        writeLog("Response body: No body response", logFile)
+                    }
                 } else {
-                    writeLog("Response body: No body response", logFile)
+                    writeLog("Response exception: $exception", logFile)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()

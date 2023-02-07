@@ -43,7 +43,9 @@ abstract class BaseActivity: AppCompatActivity() {
      */
     private var networkManager: NetworkManager? = null
 
-
+    /**
+     * Startup the prepare components and application settings declared on each activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getViewBinding().root)
@@ -170,6 +172,10 @@ abstract class BaseActivity: AppCompatActivity() {
         )
     }
 
+    /**
+     * Open the initial activities validating if there is a server configured or not, depending on
+     * that it will open the recognition camera, app status activity or sede activity info
+     */
     fun openInitialActivities() {
         val endpoint = SettingsViewModel.shared.serverEndpoint
         val validURL = URLUtil.isValidUrl(endpoint)

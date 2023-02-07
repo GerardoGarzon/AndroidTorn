@@ -31,9 +31,12 @@ class RequestManager {
             return retrofit
         }
 
+        /**
+         * Create the retrofit client which contains the interceptor and proxy (For development process)
+         */
         private fun getClientConfiguration(): OkHttpClient {
             val retrofitInterceptor = LebentechApplication.interceptor
-            val proxy = Proxy(Proxy.Type.HTTP, InetSocketAddress("10.50.89.12", 8888))
+            val proxy = Proxy(Proxy.Type.HTTP, InetSocketAddress("192.168.2.145", 8888))
             return OkHttpClient.Builder()
                 .authenticator(retrofitInterceptor)
                 .addInterceptor(retrofitInterceptor)

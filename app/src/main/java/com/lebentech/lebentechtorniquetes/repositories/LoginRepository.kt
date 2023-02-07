@@ -5,7 +5,6 @@
 package com.lebentech.lebentechtorniquetes.repositories
 
 import android.content.Context
-import android.util.Log
 import com.lebentech.lebentechtorniquetes.database.DatabaseHelper
 import com.lebentech.lebentechtorniquetes.interfaces.DeviceLoginRequestListener
 import com.lebentech.lebentechtorniquetes.interfaces.LoginRequestListener
