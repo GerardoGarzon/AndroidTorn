@@ -157,6 +157,8 @@ class CameraActivity : BaseActivity() {
                     binding.ivAnimation.visibility = View.GONE
 
                     val userInfo = CameraRecognitionViewModel.userInfo
+                    val welcomeMessage = CameraRecognitionViewModel.welcomeMessage
+
                     lastRecognition = Date()
 
                     WelcomeDialog( object: WelcomeDialogListener {
@@ -170,7 +172,7 @@ class CameraActivity : BaseActivity() {
                             binding.backgroundDialog.visibility = View.GONE
                             restartRecognition()
                         }
-                    }, userInfo.employeeName, userInfo.employeeNumber, userInfo.employeeBirthday)
+                    }, userInfo.employeeName, userInfo.employeeNumber, userInfo.employeeBirthday, welcomeMessage)
                         .show(supportFragmentManager, Constants.DIALOG_TAG)
                 }
             }

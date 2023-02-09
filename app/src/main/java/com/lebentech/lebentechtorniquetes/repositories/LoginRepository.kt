@@ -25,7 +25,7 @@ import retrofit2.Response
 
 class LoginRepository : BaseRepository() {
 
-    fun sendUserLoginRequest(model: UserLoginRequest, listener: LoginRequestListener, context: Context, isRetry: Boolean = false) {
+    fun sendUserLoginRequest(model: UserLoginRequest, listener: LoginRequestListener, context: Context) {
 
         val service = RequestManager.getClient(SettingsViewModel.shared.serverEndpoint)
                                     .create(LoginService::class.java)

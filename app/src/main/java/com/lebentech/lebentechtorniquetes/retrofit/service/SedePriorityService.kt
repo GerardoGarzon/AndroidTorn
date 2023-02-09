@@ -5,6 +5,7 @@ package com.lebentech.lebentechtorniquetes.retrofit.service
 
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.SedeResponse
+import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -19,8 +20,9 @@ interface SedePriorityService {
     )
     @GET("/LebTorniquetes/api/SedesAlter/Sedes-Alternativas")
     fun sendSedePriorityRequest(
-        @Header("Authorization") auth: String?,
-        @Query("idDispositivo") idAndroid: String?,
-        @Query("idSede") idSede: String?
+        @Header("Authorization") auth: String,
+        @Query("idDispositivo") idAndroid: String,
+        @Query("idSede") idSede: String,
+        @Query("charlesOrigen") charlesOrigin: String = SettingsViewModel.shared.serverEndpoint
     ): Call<GeneralResponse<List<SedeResponse>>>
 }

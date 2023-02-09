@@ -22,6 +22,7 @@ import com.lebentech.lebentechtorniquetes.interfaces.PhotoTakenListener
 import com.lebentech.lebentechtorniquetes.modules.camerax.listeners.ImageCapturedListener
 import com.lebentech.lebentechtorniquetes.repositories.FaceRecognitionRepository
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.EmployeeInfoResponse
+import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 import com.lebentech.lebentechtorniquetes.retrofit.request.FaceRecognitionRequest
 import com.lebentech.lebentechtorniquetes.utils.Constants
 import com.lebentech.lebentechtorniquetes.utils.GetProperImageRotation
@@ -89,6 +90,10 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
         }, ContextCompat.getMainExecutor(context))
     }
 
+    /**
+     * Takes a photo from the camera when the face recognition is ready
+     * It will be saved on the device documents directory with the name FR_Image.jpeg
+     */
     fun takePhoto(listener: PhotoTakenListener) {
         Handler(Looper.getMainLooper()).postDelayed({
             imageCapture?.let {
@@ -119,6 +124,10 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
         }, 1500)
     }
 
+    /**
+     * When the photo is saved it will take it and convert to byte array
+     * Then it will call the recognition service and consume the listener depending on the result
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendPhotoToRecognition(path: String, listener: PhotoTakenListener) {
         val byteImage = Utils.convertImageToByteArray(path)
@@ -127,12 +136,12 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
         val model = FaceRecognitionRequest(androidID, byteImage)
 
         recognitionRepository.sendFaceRecognitionRequest(model, object : FaceRecognitionResponseListener {
-            override fun onSuccess(model: EmployeeInfoResponse) {
+            override fun onSuccess(model: GeneralResponse<EmployeeInfoResponse>) {
                 listener.onSuccess(model)
             }
 
             override fun onFailure(code: Int) {
-                if (code == 407) {
+                if (code == 409) {
                     listener.onFailure(Constants.NO_DETECTION_COINCIDENCES)
                 } else {
                     listener.onFailure(Constants.ERROR_IN_DETECTION)

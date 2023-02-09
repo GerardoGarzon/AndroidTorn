@@ -82,6 +82,7 @@ class Constants {
             R.raw.b_8,
             R.raw.b_9,
             R.raw.b_10,
+            R.raw.b_11
         )
 
         // SERVER ERROR FLAG

@@ -29,10 +29,10 @@ class FaceRecognitionRepository: BaseRepository() {
             override fun onResponse( call: Call<GeneralResponse<EmployeeInfoResponse>>,  response: Response<GeneralResponse<EmployeeInfoResponse>>) {
                 if (response.isSuccessful && response.body() != null) {
                     if ( response.body()?.code == 200) {
-                        val employeeInfo = response.body()!!.data
+                        val employeeInfo = response.body()!!
                         listener.onSuccess(employeeInfo)
                     } else {
-                        listener.onFailure(407)
+                        listener.onFailure(409)
                     }
                 } else {
                     if (!checkGeneralRetry(model, listener, context, ::sendFaceRecognitionRequest)) {

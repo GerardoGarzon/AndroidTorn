@@ -51,10 +51,10 @@ class LaunchScreenActivity : BaseActivity() {
     private val runnableFileManager: Runnable = Runnable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (Environment.isExternalStorageManager()) {
-                FileManagerService.deleteOldRecords(this)
+                FileManagerService.deleteOldRecords()
             }
         } else {
-            FileManagerService.deleteOldRecords(this)
+            FileManagerService.deleteOldRecords()
         }
     }
 

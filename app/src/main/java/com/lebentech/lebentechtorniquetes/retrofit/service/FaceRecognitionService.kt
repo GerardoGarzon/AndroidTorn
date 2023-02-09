@@ -7,6 +7,7 @@ package com.lebentech.lebentechtorniquetes.retrofit.service
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.EmployeeInfoResponse
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 import com.lebentech.lebentechtorniquetes.retrofit.request.FaceRecognitionRequest
+import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import retrofit2.Call
 import retrofit2.http.*
 

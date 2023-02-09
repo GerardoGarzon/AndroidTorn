@@ -5,8 +5,9 @@
 package com.lebentech.lebentechtorniquetes.interfaces
 
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.EmployeeInfoResponse
+import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 
 interface FaceRecognitionResponseListener {
-    fun onSuccess(model: EmployeeInfoResponse)
+    fun onSuccess(model: GeneralResponse<EmployeeInfoResponse>)
     fun onFailure(code: Int)
 }

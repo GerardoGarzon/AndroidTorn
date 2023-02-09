@@ -18,7 +18,7 @@ class FileManagerService {
          * It will delete records older than 15 days ago from the internal storage
          */
         @SuppressLint("SimpleDateFormat")
-        fun deleteOldRecords(context: Context) {
+        fun deleteOldRecords() {
             val mediaDirs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
             val rootPath = File(mediaDirs, "Lebentech")
             val appPath = File(rootPath, "Torniquetes")
@@ -31,7 +31,7 @@ class FileManagerService {
                     val modifiedString = SimpleDateFormat("yyyy-MM-dd").format(modified)
                     val todayString = SimpleDateFormat("yyyy-MM-dd").format(today)
                     val difference = daysBetweenDates(modifiedString, todayString)
-                    if (difference >= 0) {
+                    if (difference >= 15) {
                         tmpFile.delete()
                     }
                 }

@@ -16,6 +16,7 @@ import com.lebentech.lebentechtorniquetes.models.FaceSize
 import com.lebentech.lebentechtorniquetes.modules.camerax.CameraManager
 import com.lebentech.lebentechtorniquetes.modules.camerax.GraphicOverlay
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.EmployeeInfoResponse
+import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 import com.lebentech.lebentechtorniquetes.utils.Constants
 import java.util.concurrent.Executors
 
@@ -23,6 +24,7 @@ class CameraRecognitionViewModel(application: Application) : AndroidViewModel(ap
 
     companion object {
         lateinit var userInfo: EmployeeInfoResponse
+        lateinit var welcomeMessage: String
     }
 
     private lateinit var cameraManager: CameraManager
@@ -124,8 +126,9 @@ class CameraRecognitionViewModel(application: Application) : AndroidViewModel(ap
 
     fun takePhoto() {
         cameraManager.takePhoto(object: PhotoTakenListener {
-            override fun onSuccess(model: EmployeeInfoResponse) {
-                userInfo = model
+            override fun onSuccess(model: GeneralResponse<EmployeeInfoResponse>) {
+                userInfo = model.data
+                welcomeMessage = model.message
                 recognitionState.postValue(Constants.CORRECT_DETECTION)
             }
 

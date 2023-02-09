@@ -30,7 +30,8 @@ class WelcomeDialog(
     private val dialogListener: WelcomeDialogListener,
     private val employeeName: String,
     private val employeeNumber: String,
-    private val employeeBirthday: String
+    private val employeeBirthday: String,
+    private val welcomeMessage: String
 ): DialogFragment() {
     private lateinit var binding: DialogWelcomeBinding
 
@@ -58,6 +59,7 @@ class WelcomeDialog(
     override fun onResume() {
         super.onResume()
 
+        binding.tvTitle.text = welcomeMessage
         binding.tvName.text = employeeName
         binding.tvEmployeeNumber.text = employeeNumber
         isUserBirthday()

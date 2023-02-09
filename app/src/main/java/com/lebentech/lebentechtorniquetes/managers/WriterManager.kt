@@ -20,7 +20,6 @@ class WriterManager {
     fun createErrorLog(request: Request, response: okhttp3.Response?, timeStart: Long, timeFinish: Long, exception: String?) {
         val organizationName = "Lebentech"
         val projectName = "Torniquetes"
-        val context = LebentechApplication.appContext
 
         val mediaDirs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
         if (mediaDirs == null) {
@@ -47,14 +46,14 @@ class WriterManager {
                 logFile.createNewFile()
 
                 // REQUEST
-                writeTitle("Error request", logFile)
+                writeTitle("Request", logFile)
                 writeLog("Time start (millis): $timeStart", logFile)
                 writeLog("Time end (millis): $timeFinish", logFile)
                 writeLog("Request path: ${request.url().url().path}", logFile)
                 writeLog("Method: ${request.method()}", logFile)
 
                 // RESPONSE
-                writeTitle("Response", logFile)
+                writeTitle("Error Response", logFile)
                 if (response != null) {
                     writeLog("Response code: ${response.code()}", logFile)
 
