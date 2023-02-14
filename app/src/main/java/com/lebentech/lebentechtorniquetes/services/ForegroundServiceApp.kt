@@ -8,12 +8,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.*
 import android.app.ActivityManager.RunningAppProcessInfo
-import android.app.ActivityManager.RunningTaskInfo
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
@@ -27,12 +25,16 @@ import com.lebentech.lebentechtorniquetes.R
 import com.lebentech.lebentechtorniquetes.views.activities.LaunchScreenActivity
 import java.util.*
 
+
 class ForegroundServiceApp : Service() {
     private val timer = Timer()
+
+    /**
+     * Broadcast receiver to stop the foreground sevice when the notification is pressed
+     */
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val manager =
-                applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            val manager = applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             manager.cancelAll()
             val state = intent.action
             if (state == "Detener servicio") {
@@ -46,6 +48,10 @@ class ForegroundServiceApp : Service() {
         return null
     }
 
+    /**
+     * When the service is created it will creater the notification channel and the notification to
+     * stop the service
+     */
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -67,6 +73,10 @@ class ForegroundServiceApp : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    /**
+     * When the application is closed it will call onTaskRemoved method and it will restart the
+     * service, then it will open the application again
+     */
     override fun onTaskRemoved(rootIntent: Intent) {
         super.onTaskRemoved(rootIntent)
         NotificationManagerCompat.from(applicationContext).cancelAll()
@@ -85,36 +95,38 @@ class ForegroundServiceApp : Service() {
         Log.d("OnDestroy", "Finalizado")
     }
 
+    /**
+     * When the service is stop by the notification it will unregister the broadcast receiver and
+     * stop the service
+     */
     fun stopService() {
         timer.cancel()
         unregisterReceiver(broadcastReceiver)
         stopService(Intent(applicationContext, ForegroundServiceApp::class.java))
     }
 
+    /**
+     * It will create the notification to stop the service
+     */
     @SuppressLint("LaunchActivityFromNotification")
     private fun createNotification() {
-        val context = applicationContext
-        val res = context.resources
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val title = res.getString(R.string.lbl_notification_title)
-            val body = res.getString(R.string.lbl_notification_body)
+            val title = applicationContext.resources.getString(R.string.lbl_notification_title)
+            val body = applicationContext.resources.getString(R.string.lbl_notification_body)
             val name: CharSequence = "My notification"
             val desc = "My notification desc"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
+
             val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL, name, importance)
-            notificationChannel.description = desc
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationChannel.description = desc
             notificationManager.createNotificationChannel(notificationChannel)
+
             val intent = Intent() //same
             intent.action = "Detener servicio"
             intent.putExtra("RES", true)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            val pendingIntent1 = PendingIntent.getBroadcast(
-                applicationContext,
-                1,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-            )
+            val pendingIntent1 = PendingIntent.getBroadcast(applicationContext, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
             val builder = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.ic_liveness)
                 .setContentTitle(title)
@@ -126,14 +138,7 @@ class ForegroundServiceApp : Service() {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .addAction(R.drawable.ic_exit, "Detener servicio", pendingIntent1)
             val notificationManagerCompat = NotificationManagerCompat.from(applicationContext)
-            if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 return
             }
             notificationManagerCompat.notify(1, builder.build())
@@ -143,6 +148,10 @@ class ForegroundServiceApp : Service() {
         }
     }
 
+    /**
+     * If the application is not running in foreground or it is closed it will automatically launch
+     * if after 5 seconds
+     */
     private val isAppRunning: Unit
         get() {
             timer.scheduleAtFixedRate(object : TimerTask() {
@@ -163,25 +172,27 @@ class ForegroundServiceApp : Service() {
             }, 0, 1000)
         }
 
+    /**
+     * It will launch the application as a new task
+     */
     private fun launchApp() {
         val launchIntent = Intent(applicationContext, LaunchScreenActivity::class.java)
         launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(launchIntent)
     }
 
-    @Throws(PackageManager.NameNotFoundException::class)
+    /**
+     * List all process running and verify if the application package name is there, if it is, it
+     * will verify if it is in foreground or in background
+     * It will return true if the app is open and in foreground
+     * Return false if the application is closed or in background
+     */
     fun checkAppRunning(): Boolean {
-        var info: RunningTaskInfo
-        val activityManager: ActivityManager = this.getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        val l = activityManager.getRunningTasks(1000)
-        println(l)
-        val i: Iterator<RunningTaskInfo> = l.iterator()
-        var packName: String
-        ApplicationInfo()
-        while (i.hasNext()) {
-            info = i.next()
-            packName = info.baseActivity!!.packageName
-            if (packName == packageName) {
+        val am = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val runningAppProcessInfo = am.runningAppProcesses
+
+        for (i in runningAppProcessInfo.indices) {
+            if (runningAppProcessInfo[i].processName == packageName) {
                 return isAppForeground
             }
         }

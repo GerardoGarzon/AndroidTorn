@@ -28,30 +28,9 @@ class RebootReceiver : BroadcastReceiver() {
             Toast.makeText(context, "Servicio de autostart ejecutado", Toast.LENGTH_LONG).show()
         } else if ("CHECK_SERVICE_ALARM" == intent.action) {
             // Alarm manager broadcast receiver
-            if (isServiceRunning(context, ForegroundServiceApp::class.java)) {
-                Log.d("BroadCast", "Service is running")
-            } else {
-                Toast.makeText(context, "Servicio de alarma ejecutado", Toast.LENGTH_LONG).show()
-                val serviceIntent = Intent(context, ForegroundServiceApp::class.java)
-                context.startService(serviceIntent)
-            }
+            Toast.makeText(context, "Servicio de alarma ejecutado", Toast.LENGTH_LONG).show()
+            val serviceIntent = Intent(context, ForegroundServiceApp::class.java)
+            context.startService(serviceIntent)
         }
-    }
-
-    /**
-     * Verify that the Service class is running, if it is running it will return true, otherwise
-     * it will return false
-     */
-    private fun isServiceRunning(context: Context, serviceClass: Class<*>): Boolean {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val services = activityManager.getRunningServices(Int.MAX_VALUE)
-        if (services != null) {
-            for (i in services.indices) {
-                if (serviceClass.name == services[i].service.className && services[i].pid != 0) {
-                    return true
-                }
-            }
-        }
-        return false
     }
 }

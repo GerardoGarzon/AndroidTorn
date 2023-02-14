@@ -12,6 +12,7 @@ import com.lebentech.lebentechtorniquetes.databinding.ActivityLoginBinding
 import com.lebentech.lebentechtorniquetes.models.Screen
 import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
 import com.lebentech.lebentechtorniquetes.utils.Constants
+import com.lebentech.lebentechtorniquetes.utils.LogUtils
 import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.LoginViewModel
 
@@ -54,7 +55,9 @@ class LoginActivity : BaseActivity() {
                         R.color.materialRed
                     )
                 } else {
-                    viewModel.loginUser(user, pass)
+                    val userSHA256 = Utils.getSha256(user)
+                    val passSHA256 = Utils.getSha256(pass)
+                    viewModel.loginUser(userSHA256, passSHA256)
                 }
             } else {
                 Utils.createSnackBar(

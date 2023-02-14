@@ -88,5 +88,8 @@ class Constants {
         // SERVER ERROR FLAG
         const val SERVER_ERROR_ON = 1
         const val SERVER_ERROR_OFF = 0
+
+        // PHOTO NAME
+        const val PHOTO_TAKEN_NAME = "FR_IMAGE.jpeg"
     }
 }

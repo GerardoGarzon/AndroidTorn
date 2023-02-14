@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.util.Size
 import androidx.annotation.RequiresApi
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -24,10 +25,7 @@ import com.lebentech.lebentechtorniquetes.repositories.FaceRecognitionRepository
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.EmployeeInfoResponse
 import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 import com.lebentech.lebentechtorniquetes.retrofit.request.FaceRecognitionRequest
-import com.lebentech.lebentechtorniquetes.utils.Constants
-import com.lebentech.lebentechtorniquetes.utils.GetProperImageRotation
-import com.lebentech.lebentechtorniquetes.utils.LogUtils
-import com.lebentech.lebentechtorniquetes.utils.Utils
+import com.lebentech.lebentechtorniquetes.utils.*
 import java.io.File
 import java.util.concurrent.ExecutorService
 
@@ -44,6 +42,10 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
     private var imageCapture: ImageCapture? = null
 
     private var recognitionRepository: FaceRecognitionRepository = FaceRecognitionRepository()
+
+    private val width = 720
+
+    private val height = 1280
 
     /**
      * Start the camera preview
@@ -74,6 +76,8 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
 
             // Create the image capture usage case to take a photo form the camera view
             imageCapture = ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .setTargetResolution(Size(width, height))
                 .build()
 
             try{
@@ -98,19 +102,21 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
         Handler(Looper.getMainLooper()).postDelayed({
             imageCapture?.let {
                 val externalMediaDirs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                val file = File(externalMediaDirs,"FR_IMAGE.jpeg")
+                val file = File(externalMediaDirs, Constants.PHOTO_TAKEN_NAME)
+                val metadata = ImageCapture.Metadata()
 
                 val outputFileOptions = ImageCapture.OutputFileOptions
                     .Builder(file)
+                    .setMetadata(metadata)
                     .build()
 
                 it.takePicture(outputFileOptions, imageExecutorService, object: ImageCapture.OnImageSavedCallback {
                         @RequiresApi(Build.VERSION_CODES.O)
-                        override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                         override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                             listener.photoTaken()
 
                             val newPath = file.toURI().toString().replace("file:", "")
-                            GetProperImageRotation.getRotatedImageFile(File(newPath),context)
+                            ImageUtils.getRotatedImageFile(File(newPath))
                             sendPhotoToRecognition(newPath, listener)
                         }
 

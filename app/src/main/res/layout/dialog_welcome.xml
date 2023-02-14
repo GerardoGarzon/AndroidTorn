@@ -23,7 +23,8 @@
             app:layout_constraintRight_toRightOf="parent"
             android:textStyle="bold"
             android:textSize="@dimen/textSizeUltra"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/tv_name"
@@ -36,7 +37,8 @@
             app:layout_constraintRight_toRightOf="parent"
             android:textStyle="bold"
             android:textSize="@dimen/textSizeMax"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/iv_animation"
@@ -58,7 +60,8 @@
             app:layout_constraintRight_toRightOf="parent"
             android:textStyle="bold"
             android:textSize="@dimen/textSizeMax"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/tv_birthday"
@@ -73,7 +76,8 @@
             android:textSize="@dimen/textSizeUltra"
             android:fontFamily="@font/lb"
             android:textColor="@color/colorWhite"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:textAlignment="center" />
 
 
 

@@ -8,5 +8,5 @@ import com.google.gson.annotations.SerializedName
 class EmployeeInfoResponse (
     @SerializedName("numeroEmpleado") var employeeNumber: String,
     @SerializedName("nombre") var employeeName: String,
-    @SerializedName("fechaNacimiento") var employeeBirthday: String
+    @SerializedName("fechaNacimiento") var employeeBirthday: String?
 )

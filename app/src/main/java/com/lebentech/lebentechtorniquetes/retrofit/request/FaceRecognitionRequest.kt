@@ -5,5 +5,6 @@ package com.lebentech.lebentechtorniquetes.retrofit.request
  */
 class FaceRecognitionRequest (
     var idDispositivo: String,
-    var foto: ByteArray
+    var foto: ByteArray,
+    var torniquete: Int = 0
 )

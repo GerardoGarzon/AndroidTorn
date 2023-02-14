@@ -52,7 +52,6 @@ class FaceAnalyzer(lifecycle: Lifecycle, private val overlay: GraphicOverlay, pr
         val image = InputImage.fromMediaImage(imageProxy.image as Image, imageProxy.imageInfo.rotationDegrees)
         detector.process(image)
             .addOnSuccessListener { faces ->
-                LogUtils.printLog(TAG, "Number of face detected: " + faces.size)
                 overlay.setFaces(faces)
             }
             .addOnFailureListener { exception ->

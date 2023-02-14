@@ -92,13 +92,13 @@ class Utils {
         /**
          * Encode the given string in SHA 256 to protect its content
          */
-        fun getSha256(secretKey: String): String? {
+        fun getSha256(secretKey: String): String {
             return try {
                 val digest: MessageDigest = MessageDigest.getInstance("SHA-256")
                 digest.reset()
                 bin2hex(digest.digest(secretKey.toByteArray()))
             } catch (ex: Exception) {
-                null
+                ""
             }
         }
 

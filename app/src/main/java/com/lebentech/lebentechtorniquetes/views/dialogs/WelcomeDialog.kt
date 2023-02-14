@@ -60,7 +60,11 @@ class WelcomeDialog(
         super.onResume()
 
         binding.tvTitle.text = welcomeMessage
-        binding.tvName.text = employeeName
+        binding.tvName.text = employeeName.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
         binding.tvEmployeeNumber.text = employeeNumber
         isUserBirthday()
 
@@ -89,23 +93,27 @@ class WelcomeDialog(
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun isUserBirthday() {
-        val dateFormatted = SimpleDateFormat("dd/MM/yyyy").format(Date())
-        val birthdayAnimations = Constants.ANIMATIONS_VALUE
-        val randNumber = (1 until birthdayAnimations.size).shuffled().last()
-
-        if ( dateFormatted.equals(employeeBirthday) ) {
-            val birthdayFont = resources.getFont(R.font.lb)
-
-            binding.tvTitle.typeface = birthdayFont
-            binding.tvName.typeface = birthdayFont
-            binding.tvEmployeeNumber.typeface = birthdayFont
-            binding.tvBirthday.typeface = birthdayFont
-            binding.tvBirthday.visibility = View.VISIBLE
-
-            binding.ivAnimation.setAnimation(birthdayAnimations[randNumber])
-            binding.ivAnimation.repeatCount = LottieDrawable.INFINITE
-        } else {
+        if (employeeBirthday == "") {
             binding.ivAnimation.setAnimation(R.raw.user)
+        } else {
+            val dateFormatted = SimpleDateFormat("dd/MM/yyyy").format(Date())
+            val birthdayAnimations = Constants.ANIMATIONS_VALUE
+            val randNumber = (1 until birthdayAnimations.size).shuffled().last()
+
+            if ( dateFormatted.equals(employeeBirthday) ) {
+                val birthdayFont = resources.getFont(R.font.lb)
+
+                binding.tvTitle.typeface = birthdayFont
+                binding.tvName.typeface = birthdayFont
+                binding.tvEmployeeNumber.typeface = birthdayFont
+                binding.tvBirthday.typeface = birthdayFont
+                binding.tvBirthday.visibility = View.VISIBLE
+
+                binding.ivAnimation.setAnimation(birthdayAnimations[randNumber])
+                binding.ivAnimation.repeatCount = LottieDrawable.INFINITE
+            } else {
+                binding.ivAnimation.setAnimation(R.raw.user)
+            }
         }
         binding.ivAnimation.speed = 0.75F
         binding.ivAnimation.playAnimation()

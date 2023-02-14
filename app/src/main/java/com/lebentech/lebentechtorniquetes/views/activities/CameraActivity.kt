@@ -15,6 +15,7 @@ import com.lebentech.lebentechtorniquetes.interfaces.WelcomeDialogListener
 import com.lebentech.lebentechtorniquetes.models.Screen
 import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
 import com.lebentech.lebentechtorniquetes.utils.Constants
+import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.CameraRecognitionViewModel
 import com.lebentech.lebentechtorniquetes.views.dialogs.WelcomeDialog
 import java.util.*
@@ -172,7 +173,7 @@ class CameraActivity : BaseActivity() {
                             binding.backgroundDialog.visibility = View.GONE
                             restartRecognition()
                         }
-                    }, userInfo.employeeName, userInfo.employeeNumber, userInfo.employeeBirthday, welcomeMessage)
+                    }, userInfo.employeeName.lowercase(), userInfo.employeeNumber, userInfo.employeeBirthday ?: "", welcomeMessage)
                         .show(supportFragmentManager, Constants.DIALOG_TAG)
                 }
             }

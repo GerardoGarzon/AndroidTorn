@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 class RequestManager {
     companion object {
-        private const val TIMEOUT_IN_SECONDS: Long = 20
+        private const val TIMEOUT_IN_SECONDS: Long = 2100
         private lateinit var retrofit: Retrofit
 
         /**
@@ -42,7 +42,7 @@ class RequestManager {
                 .addInterceptor(retrofitInterceptor)
                 .connectTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
-                // .proxy(proxy)
+                .proxy(proxy)
                 .build()
         }
     }

@@ -3,6 +3,7 @@
     <string name="app_name">Lebentech</string>
     <string name="lbl_notification_title">Running process</string>
     <string name="lbl_notification_body">Execution process, click the notification to stop it</string>
+    <string name="lbl_notification_start_body">Execution stop, click the notification to start it again</string>
 
     <!-- Face recognition states -->
 

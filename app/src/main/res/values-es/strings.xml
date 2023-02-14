@@ -3,6 +3,7 @@
     <string name="app_name">Lebentech</string>
     <string name="lbl_notification_title">Proceso en ejecución</string>
     <string name="lbl_notification_body">Ejecutando el proceso, selecciona la notificación para detenerlo</string>
+    <string name="lbl_notification_start_body">Proceso detenido, selecciona la notificación para iniciarlo nuevamente</string>
     <string name="textStartingServices">Iniciando servicios</string>
     <string name="textNoFaceDetected">Ningún rostro detectado</string>
     <string name="lbl_login_title">Bienvenido</string>

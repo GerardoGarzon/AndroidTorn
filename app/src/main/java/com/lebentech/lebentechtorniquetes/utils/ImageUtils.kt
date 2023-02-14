@@ -2,13 +2,63 @@ package com.lebentech.lebentechtorniquetes.utils
 
 import android.graphics.*
 import android.media.Image
+import android.os.Environment
+import androidx.exifinterface.media.ExifInterface
+import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * Created by Gerardo Garzon on 02/01/23.
  */
 class ImageUtils {
     companion object {
+
+        fun getRotatedImageFile(photoFile: File): File {
+            val exifInterface = ExifInterface(photoFile.absolutePath)
+            val orientation = exifInterface.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
+            val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+            val bmp: Bitmap = when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> {
+                    ImageUtils.rotateImage(bitmap, 90)
+                }
+                ExifInterface.ORIENTATION_ROTATE_180 -> {
+                    ImageUtils.rotateImage(bitmap, 180)
+                }
+                ExifInterface.ORIENTATION_ROTATE_270 -> {
+                    ImageUtils.rotateImage(bitmap, 270)
+                }
+                else -> {
+                    bitmap
+                }
+            }
+
+            return saveImage(bmp)
+        }
+
+        private fun saveImage(image: Bitmap): File {
+            val filename = getImageFilePath()
+            val imageFile = File(filename)
+            val os = BufferedOutputStream(FileOutputStream(imageFile))
+
+            image.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.close()
+
+            return imageFile
+        }
+
+        private fun getImageFilePath(): String {
+            val externalMediaDirs = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS
+            )
+            val file = File(externalMediaDirs, Constants.PHOTO_TAKEN_NAME)
+            return file.absolutePath
+        }
+
         fun toBitmap(image: Image): Bitmap {
             val yBuffer = image.planes[0].buffer // Y
             val vuBuffer = image.planes[2].buffer // VU
@@ -41,6 +91,14 @@ class ImageUtils {
                 bitmap, 0, 0,
                 bitmap.width, bitmap.height, matrix, false
             )
+        }
+
+        fun rotateImage(bitmap: Bitmap, degree: Int): Bitmap {
+            val matrix = Matrix()
+            matrix.postRotate(degree.toFloat())
+            val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+            bitmap.recycle()
+            return rotatedBitmap
         }
     }
 }

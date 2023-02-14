@@ -274,30 +274,11 @@ class LaunchScreenActivity : BaseActivity() {
      */
     private fun startServices() {
         isRequestingPermissions = false
-        if (!isServiceRunning(ForegroundServiceApp::class.java)) {
-            Thread(runnableMonitor).start()
-        }
+        Thread(runnableMonitor).start()
         Thread(runnableFileManager).start()
         Thread(runnableNetworking).start()
         sendLifeTest()
         SettingsViewModel.shared.loadPreferences()
-    }
-
-    /**
-     * Before launching the service it has to verify that it is not already running
-     */
-    private fun isServiceRunning(serviceClass: Class<*>): Boolean {
-        val activityManager = applicationContext.getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        val services = activityManager.getRunningServices(Int.MAX_VALUE)
-
-        if (services != null) {
-            for (i in services.indices) {
-                if (serviceClass.name.equals(services[i].service.className) && services[i].pid != 0) {
-                    return true
-                }
-            }
-        }
-        return false
     }
 
     /**
