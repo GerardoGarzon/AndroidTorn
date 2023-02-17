@@ -16,7 +16,7 @@
     <string name="lbl_android_id">Android ID: %s</string>
     <string name="lbl_new_url">Nueva URL</string>
     <string name="lbl_title_accept">Aceptar</string>
-    <string name="lbl_text_error">Ha ocurrido un error, reintente</string>
+    <string name="lbl_text_error">Ha ocurrido un error, intente nuevamente</string>
     <string name="lbl_error_network">Sin red</string>
     <string name="lbl_error_maintenance">En mantenimiento</string>
     <string name="lbl_error_open_system">Problemas con el sistema de apertura</string>

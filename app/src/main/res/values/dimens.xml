@@ -7,6 +7,7 @@
     <dimen name="textSizeNormal">18sp</dimen>
     <dimen name="textSizeBig">20sp</dimen>
     <dimen name="textSizeMax">22sp</dimen>
+    <dimen name="textSizeMaxTitle">30sp</dimen>
     <dimen name="textSizeUltra">38sp</dimen>
 
     <!-- General -->

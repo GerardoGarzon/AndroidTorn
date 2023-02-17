@@ -97,6 +97,7 @@ abstract class BaseActivity: AppCompatActivity() {
 
     protected open fun openAppStatusActivity(index: Int) {
         val intent = Intent(this, AppStatusActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra("appStatus", index)
         startActivity(intent)
         finishAfterTransition()

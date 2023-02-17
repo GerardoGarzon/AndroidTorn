@@ -125,7 +125,9 @@ class CameraActivity : BaseActivity() {
                         }
 
                         override fun onAnimationCancel(animation: Animator) {
-                            startSpinnerAnimation()
+                            if (viewModel.getRecognitionState().value == Constants.PHOTO_TAKEN) {
+                                startSpinnerAnimation()
+                            }
                         }
 
                         override fun onAnimationRepeat(animation: Animator) { }
@@ -150,7 +152,7 @@ class CameraActivity : BaseActivity() {
                     restartRecognition()
                 }
                 Constants.CORRECT_DETECTION -> {
-                    binding.tvState.setText(R.string.textCorrectRecognition)
+                    binding.tvState.text = CameraRecognitionViewModel.welcomeMessage
                     binding.llContainer.background = ContextCompat.getDrawable(applicationContext, R.color.colorGreen)
                     binding.stepper.currentStep = 3
 
@@ -164,6 +166,7 @@ class CameraActivity : BaseActivity() {
 
                     WelcomeDialog( object: WelcomeDialogListener {
                         override fun onAppear() {
+                            binding.ivAnimation.visibility = View.GONE
                             binding.faceSizeReference.visibility = View.GONE
                             binding.backgroundDialog.visibility = View.VISIBLE
                         }
@@ -184,7 +187,7 @@ class CameraActivity : BaseActivity() {
         Handler(Looper.getMainLooper()).postDelayed( {
             viewModel.setRecognitionState(Constants.NO_FACE_IN_FRONT)
             viewModel.stopRecognition()
-        }, 3000 )
+        }, 1500 )
     }
 
     fun startSpinnerAnimation() {

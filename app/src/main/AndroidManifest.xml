@@ -75,7 +75,6 @@
         <activity
             android:name=".views.activities.CameraActivity"
             android:exported="true"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />

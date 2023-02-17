@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -22,7 +23,10 @@ import com.lebentech.lebentechtorniquetes.R
 import com.lebentech.lebentechtorniquetes.databinding.DialogWelcomeBinding
 import com.lebentech.lebentechtorniquetes.interfaces.WelcomeDialogListener
 import com.lebentech.lebentechtorniquetes.utils.Constants
+import com.lebentech.lebentechtorniquetes.utils.Utils
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 
@@ -60,11 +64,8 @@ class WelcomeDialog(
         super.onResume()
 
         binding.tvTitle.text = welcomeMessage
-        binding.tvName.text = employeeName.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(
-                Locale.getDefault()
-            ) else it.toString()
-        }
+        val nameCapitalized = employeeName.split(" ").joinToString(separator = " ", transform = String::capitalize)
+        binding.tvName.text = nameCapitalized
         binding.tvEmployeeNumber.text = employeeNumber
         isUserBirthday()
 
@@ -89,6 +90,7 @@ class WelcomeDialog(
     /**
      * Verify the user birthday, if it fit with the actual date it will change the font to display
      * a happy birthday message, otherwise it will set the default font and show a simple animation
+     * tag:DATE
      */
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -96,11 +98,18 @@ class WelcomeDialog(
         if (employeeBirthday == "") {
             binding.ivAnimation.setAnimation(R.raw.user)
         } else {
-            val dateFormatted = SimpleDateFormat("dd/MM/yyyy").format(Date())
+            val todayDate = Date()
+            val birthdayDate = Utils.stringToDate(employeeBirthday)
+
+            val todayLocalDate: LocalDate = todayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            val birthdayLocalDate: LocalDate = birthdayDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+
             val birthdayAnimations = Constants.ANIMATIONS_VALUE
             val randNumber = (1 until birthdayAnimations.size).shuffled().last()
 
-            if ( dateFormatted.equals(employeeBirthday) ) {
+            if (todayLocalDate.dayOfMonth == birthdayLocalDate.dayOfMonth &&
+                todayLocalDate.monthValue == birthdayLocalDate.monthValue ) {
+
                 val birthdayFont = resources.getFont(R.font.lb)
 
                 binding.tvTitle.typeface = birthdayFont
@@ -111,6 +120,7 @@ class WelcomeDialog(
 
                 binding.ivAnimation.setAnimation(birthdayAnimations[randNumber])
                 binding.ivAnimation.repeatCount = LottieDrawable.INFINITE
+
             } else {
                 binding.ivAnimation.setAnimation(R.raw.user)
             }

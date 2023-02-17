@@ -24,13 +24,13 @@ class ImageUtils {
             val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
             val bmp: Bitmap = when (orientation) {
                 ExifInterface.ORIENTATION_ROTATE_90 -> {
-                    ImageUtils.rotateImage(bitmap, 90)
+                    rotateImage(bitmap, 90)
                 }
                 ExifInterface.ORIENTATION_ROTATE_180 -> {
-                    ImageUtils.rotateImage(bitmap, 180)
+                    rotateImage(bitmap, 180)
                 }
                 ExifInterface.ORIENTATION_ROTATE_270 -> {
-                    ImageUtils.rotateImage(bitmap, 270)
+                    rotateImage(bitmap, 270)
                 }
                 else -> {
                     bitmap
@@ -45,7 +45,7 @@ class ImageUtils {
             val imageFile = File(filename)
             val os = BufferedOutputStream(FileOutputStream(imageFile))
 
-            image.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            image.compress(Bitmap.CompressFormat.JPEG, 75, os)
             os.close()
 
             return imageFile
@@ -93,7 +93,7 @@ class ImageUtils {
             )
         }
 
-        fun rotateImage(bitmap: Bitmap, degree: Int): Bitmap {
+        private fun rotateImage(bitmap: Bitmap, degree: Int): Bitmap {
             val matrix = Matrix()
             matrix.postRotate(degree.toFloat())
             val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)

@@ -10,6 +10,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
@@ -23,12 +25,14 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.lebentech.lebentechtorniquetes.R
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.experimental.and
 
@@ -233,9 +237,21 @@ class Utils {
         fun verifyMaliciousString(text: String): Boolean {
             val patternURL = Regex("[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)")
             val patterSQLSentence = Regex("((SELECT|DELETE|UPDATE|INSERT INTO) (\\*|[A-Z0-9_]+) (FROM) ([A-Z0-9_]+))( (WHERE) ([A-Z0-9_]+) (=|<|>|>=|<=|==|!=) (\\?|\\\$[A-Z]{1}[A-Z_]+)( (AND) ([A-Z0-9_]+) (=|<|>|>=|<=|==|!=) (\\?))?)?")
+            val specialCharacters = arrayOf(";", "script", "<", ">", "$", "&", "?", "!", ".", ",", "{", "}", "[", "]", "(", ")")
 
-            return  patternURL.containsMatchIn(text) ||
-                    patterSQLSentence.containsMatchIn(text)
+            for (character in specialCharacters) {
+                if (text.contains(character)) {
+                    return true
+                }
+            }
+
+            return  patterSQLSentence.containsMatchIn(text) ||
+                    patternURL.containsMatchIn(text)
+        }
+
+        fun stringToDate(dateString: String): Date {
+            val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            return formatter.parse(dateString) ?: Date()
         }
     }
 }

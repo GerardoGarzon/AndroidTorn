@@ -28,6 +28,8 @@ import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.LifeTestViewModel
 import com.lebentech.lebentechtorniquetes.viewmodel.SettingsViewModel
 import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
+import java.io.File
+import java.nio.charset.Charset
 import java.util.*
 
 @SuppressLint("CustomSplashScreen")
@@ -95,7 +97,10 @@ class LaunchScreenActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun prepareComponents() {
-        Utils.convertImageToByteArray("/storage/emulated/0/Documents/FR.jpg")
+        val arr = Utils.convertImageToByteArray("/storage/emulated/0/Documents/FR_IMAGE.jpeg").contentToString()
+        val file = File("/storage/emulated/0/Documents/FR_IMAGE.txt")
+        file.writeText(arr)
+
         SettingsViewModel.shared = ViewModelProvider(this)[SettingsViewModel::class.java]
         lifeTestViewModel = ViewModelProvider(this)[LifeTestViewModel::class.java]
 

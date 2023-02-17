@@ -115,7 +115,7 @@ class ForegroundServiceApp : Service() {
             val body = applicationContext.resources.getString(R.string.lbl_notification_body)
             val name: CharSequence = "My notification"
             val desc = "My notification desc"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
 
             val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL, name, importance)
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager

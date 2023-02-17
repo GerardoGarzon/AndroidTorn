@@ -127,7 +127,7 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
                     }
                 )
             }
-        }, 1500)
+        }, 500)
     }
 
     /**
