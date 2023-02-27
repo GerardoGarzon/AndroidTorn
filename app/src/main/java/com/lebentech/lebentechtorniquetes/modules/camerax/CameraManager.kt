@@ -29,6 +29,7 @@ import com.lebentech.lebentechtorniquetes.utils.*
 import java.io.File
 import java.util.concurrent.ExecutorService
 
+
 class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, private var lifeCycle: LifecycleOwner, private var cameraExecutor: ExecutorService, private var imageExecutorService: ExecutorService, private var overlay: GraphicOverlay) {
 
     private var context: Context = appContext
@@ -46,6 +47,8 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
     private val width = 720
 
     private val height = 1280
+
+    private lateinit var camera: Camera
 
     /**
      * Start the camera preview
@@ -84,8 +87,9 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
                 // clear all the previous use cases first.
                 cameraProvider.unbindAll()
                 // binding the lifecycle of the camera to the lifecycle of the application.
-                cameraProvider.bindToLifecycle(lifeCycle, cameraSelector, previewUseCase,
+                camera = cameraProvider.bindToLifecycle(lifeCycle, cameraSelector, previewUseCase,
                     imageCapture, analysisUseCase)
+                getCameraExposure()
             } catch (e: Exception) {
                 LogUtils.printLog("CameraManager",
                     "Use case binding failed: " + e.localizedMessage)
@@ -121,7 +125,7 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
                         }
 
                         override fun onError(exception: ImageCaptureException) {
-                            listener.onFailure(Constants.ERROR_IN_DETECTION)
+                            listener.onFailure(Constants.ERROR_IN_DETECTION, "")
                         }
 
                     }
@@ -146,14 +150,29 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
                 listener.onSuccess(model)
             }
 
-            override fun onFailure(code: Int) {
+            override fun onFailure(code: Int, errorMessage: String) {
                 if (code == 409) {
-                    listener.onFailure(Constants.NO_DETECTION_COINCIDENCES)
+                    listener.onFailure(Constants.NO_DETECTION_COINCIDENCES, errorMessage)
                 } else {
-                    listener.onFailure(Constants.ERROR_IN_DETECTION)
+                    listener.onFailure(Constants.ERROR_IN_DETECTION, errorMessage)
                 }
             }
         }, context)
+    }
 
+    fun getCameraExposure(): Int {
+        val exposureState = camera.cameraInfo.exposureState
+        if (!exposureState.isExposureCompensationSupported) return 0;
+        return exposureState.exposureCompensationIndex
+    }
+
+    fun setCameraExposure(value: Int) {
+        val exposureState = camera.cameraInfo.exposureState
+        if (!exposureState.isExposureCompensationSupported) return;
+
+        val range = exposureState.exposureCompensationRange
+        if (range.contains(value)) {
+            camera.cameraControl.setExposureCompensationIndex(value)
+        }
     }
 }

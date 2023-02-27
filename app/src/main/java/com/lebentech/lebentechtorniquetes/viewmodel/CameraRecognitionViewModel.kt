@@ -132,7 +132,8 @@ class CameraRecognitionViewModel(application: Application) : AndroidViewModel(ap
                 recognitionState.postValue(Constants.CORRECT_DETECTION)
             }
 
-            override fun onFailure(error: Int) {
+            override fun onFailure(error: Int, errorMessage: String) {
+                welcomeMessage = errorMessage
                 if (error == Constants.NO_DETECTION_COINCIDENCES) {
                     recognitionState.postValue(Constants.NO_DETECTION_COINCIDENCES)
                 } else {

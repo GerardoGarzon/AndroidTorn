@@ -12,8 +12,5 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Kotlin-1.8.0-blueviolet?style=for-the-badge&logo=kotlin&logoColor=white">
-  <img src="https://img.shields.io/badge/MessageKit-3.7.0-green?style=for-the-badge&logo=Messenger&logoColor=white">
-  <img src="https://img.shields.io/badge/Firebase-yellow?style=for-the-badge&logo=Firebase&logoColor=white">
-  <img src="https://img.shields.io/badge/Cocoapods-red?style=for-the-badge&logo=CocoaPods&logoColor=white">
 </p>
 

@@ -9,5 +9,5 @@ import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 
 interface FaceRecognitionResponseListener {
     fun onSuccess(model: GeneralResponse<EmployeeInfoResponse>)
-    fun onFailure(code: Int)
+    fun onFailure(code: Int, errorMessage: String)
 }

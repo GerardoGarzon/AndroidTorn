@@ -17,7 +17,6 @@ interface DeviceLoginService {
         @Query("idDispositivo") idAndroid: String,
         @Query("secretKey") secretKey: String,
         @Query("origen") origin: String,
-        @Query("ipOrigen") ipOrigin: String,
-        @Query("usuario") usuario: String = ""
+        @Query("ipOrigen") ipOrigin: String
     ): Call<GeneralResponse<TokenResponse>>
 }

@@ -49,7 +49,7 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application) 
 
         val model = DeviceLoginRequest(
             getAndroidID(getApplication<Application>().applicationContext),
-            getSha256(Constants.SECRET_KEY)?.lowercase(Locale.getDefault()) ?: ""
+            getSha256(Constants.SECRET_KEY).lowercase(Locale.getDefault()) ?: ""
         )
 
         loginRepository.sendDeviceLoginRequest(model, object : DeviceLoginRequestListener {

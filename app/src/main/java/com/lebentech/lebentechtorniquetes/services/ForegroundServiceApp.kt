@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.lebentech.lebentechtorniquetes.R
+import com.lebentech.lebentechtorniquetes.managers.WriterManager
 import com.lebentech.lebentechtorniquetes.views.activities.LaunchScreenActivity
 import java.util.*
 
@@ -160,6 +161,9 @@ class ForegroundServiceApp : Service() {
                         if (!checkAppRunning()) {
                             Thread.sleep(5000)
                             if (!checkAppRunning()) {
+                                WriterManager().createTextLog("Application closed", arrayOf(
+                                    "Application is closed at time: ${Date()}"
+                                ), "closed")
                                 launchApp()
                             }
                         }

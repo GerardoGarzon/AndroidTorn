@@ -9,6 +9,6 @@ import com.lebentech.lebentechtorniquetes.retrofit.reponses.GeneralResponse
 
 interface PhotoTakenListener {
     fun onSuccess(model: GeneralResponse<EmployeeInfoResponse>)
-    fun onFailure(error: Int)
+    fun onFailure(error: Int, errorMessage: String)
     fun photoTaken()
 }

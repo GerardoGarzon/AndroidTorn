@@ -10,8 +10,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
@@ -24,10 +22,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.lebentech.lebentechtorniquetes.R
-import java.io.BufferedReader
-import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -35,6 +30,8 @@ import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.experimental.and
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 
 class Utils {

@@ -17,6 +17,7 @@ import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
 import com.lebentech.lebentechtorniquetes.utils.Constants
 import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.CameraRecognitionViewModel
+import com.lebentech.lebentechtorniquetes.views.dialogs.BrightnessDialog
 import com.lebentech.lebentechtorniquetes.views.dialogs.WelcomeDialog
 import java.util.*
 
@@ -59,6 +60,11 @@ class CameraActivity : BaseActivity() {
         // Listener
         binding.configButton.setOnClickListener {
             openLoginActivity()
+        }
+
+        binding.ivLogo.setOnClickListener {
+            BrightnessDialog()
+                .show(supportFragmentManager, Constants.DIALOG_TAG)
         }
 
         viewModel.setCameraManager(binding, this)
@@ -134,7 +140,11 @@ class CameraActivity : BaseActivity() {
                     })
                 }
                 Constants.ERROR_IN_DETECTION -> {
-                    binding.tvState.setText(R.string.textErrorInDetection)
+                    if (CameraRecognitionViewModel.welcomeMessage.isEmpty()) {
+                        binding.tvState.setText(R.string.textErrorInDetection)
+                    } else {
+                        binding.tvState.text = CameraRecognitionViewModel.welcomeMessage
+                    }
                     binding.llContainer.background = ContextCompat.getDrawable(applicationContext, R.color.colorRed)
                     binding.stepper.currentStep = 0
 
@@ -143,7 +153,11 @@ class CameraActivity : BaseActivity() {
                     restartRecognition()
                 }
                 Constants.NO_DETECTION_COINCIDENCES -> {
-                    binding.tvState.setText(R.string.textNoCoincidences)
+                    if (CameraRecognitionViewModel.welcomeMessage.isEmpty()) {
+                        binding.tvState.setText(R.string.textNoCoincidences)
+                    } else {
+                        binding.tvState.text = CameraRecognitionViewModel.welcomeMessage
+                    }
                     binding.llContainer.background = ContextCompat.getDrawable(applicationContext, R.color.colorRed)
                     binding.stepper.currentStep = 2
 

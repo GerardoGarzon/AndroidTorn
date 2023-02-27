@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.lebentech.lebentechtorniquetes.databinding.ActivityLaunchScreenBinding
 import com.lebentech.lebentechtorniquetes.interfaces.ServerErrorListener
+import com.lebentech.lebentechtorniquetes.managers.WriterManager
 import com.lebentech.lebentechtorniquetes.models.Screen
 import com.lebentech.lebentechtorniquetes.receivers.DeviceReceiver
 import com.lebentech.lebentechtorniquetes.repositories.base.BaseRepository
@@ -97,9 +98,15 @@ class LaunchScreenActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun prepareComponents() {
-        val arr = Utils.convertImageToByteArray("/storage/emulated/0/Documents/FR_IMAGE.jpeg").contentToString()
+
+        // Create startup log
+        WriterManager().createTextLog("Startup application", arrayOf(
+            "Application started up at: ${Date()}"
+        ), "startup")
+
+        /* val arr = Utils.convertImageToByteArray("/storage/emulated/0/Documents/FR_IMAGE.jpeg").contentToString()
         val file = File("/storage/emulated/0/Documents/FR_IMAGE.txt")
-        file.writeText(arr)
+        file.writeText(arr) */
 
         SettingsViewModel.shared = ViewModelProvider(this)[SettingsViewModel::class.java]
         lifeTestViewModel = ViewModelProvider(this)[LifeTestViewModel::class.java]
@@ -290,7 +297,10 @@ class LaunchScreenActivity : BaseActivity() {
      * Start to send life test request each 3 minutes or the specific value in lifeTestMinutesPeriod
      */
     private fun sendLifeTest() {
-        Handler(Looper.getMainLooper()).postDelayed( lifeTestRunnable , (60000 * lifeTestMinutesPeriod).toLong())
+        Handler(Looper.getMainLooper()).postDelayed(
+            lifeTestRunnable ,
+            (60000 * lifeTestMinutesPeriod).toLong()
+        )
     }
 
     /**

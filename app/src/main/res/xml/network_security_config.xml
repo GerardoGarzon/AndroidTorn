@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <debug-overrides>
+    <domain-config>
+        <domain includeSubdomains="true" />
         <trust-anchors>
-            <!-- Trust user added CAs while debuggable only -->
             <certificates src="user" />
+            <certificates src="system" />
         </trust-anchors>
-    </debug-overrides>
+    </domain-config>
 </network-security-config>

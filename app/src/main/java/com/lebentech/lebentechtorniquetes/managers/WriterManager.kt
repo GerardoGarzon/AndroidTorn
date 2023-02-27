@@ -13,6 +13,43 @@ import java.util.*
 
 class WriterManager {
 
+    fun createTextLog(title: String, lines: Array<String>, state: String) {
+        val timeFinish = Date().time
+        val organizationName = "Lebentech"
+        val projectName = "Torniquetes"
+
+        val mediaDirs = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        if (mediaDirs == null) {
+            return
+        } else {
+            val organizationDir = File(mediaDirs, organizationName)
+            val projectDir = File(organizationDir, projectName)
+            val requestsLogsDir = File(projectDir, state)
+            val fileAbsolutePath = requestsLogsDir.absolutePath + File.separator
+
+            if (!requestsLogsDir.exists()) {
+                requestsLogsDir.mkdirs()
+            }
+
+            val logFile = File("${fileAbsolutePath}application_${state}_$timeFinish.txt")
+            if (logFile.exists()) {
+                logFile.delete()
+            }
+
+            try {
+                logFile.createNewFile()
+
+                // REQUEST
+                writeTitle(title, logFile)
+                lines.forEach { line ->
+                    writeLog(line, logFile)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     /**
      * Create an error log in the Android application data folder
      * It will contain the path of the request and the information from the error response
