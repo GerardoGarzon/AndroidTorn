@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.util.Range
 import android.util.Size
 import androidx.annotation.RequiresApi
 import androidx.camera.core.*
@@ -50,6 +51,8 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
 
     private lateinit var camera: Camera
 
+
+
     /**
      * Start the camera preview
      */
@@ -58,7 +61,7 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
         cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
         cameraProviderFuture.addListener({
-            val cameraProvider = cameraProviderFuture.get()
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             // Connecting a preview use case to the preview in the xml file.
             val previewUseCase = Preview.Builder().build().also{
@@ -72,7 +75,7 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
                     it.setAnalyzer(cameraExecutor, FaceAnalyzer(lifeCycle.lifecycle, overlay, object:
                         ImageCapturedListener {
                         override fun imageCaptured(image: Bitmap) {
-                            LogUtils.printLog("Algo")
+                            // Log.println(Log.INFO, "ALGO", "123")
                         }
                     }))
                 }
@@ -162,8 +165,12 @@ class CameraManager(appContext: Context, appBinding: ActivityCameraBinding, priv
 
     fun getCameraExposure(): Int {
         val exposureState = camera.cameraInfo.exposureState
-        if (!exposureState.isExposureCompensationSupported) return 0;
         return exposureState.exposureCompensationIndex
+    }
+
+    fun getCameraRange(): Range<Int> {
+        val exposureState = camera.cameraInfo.exposureState
+        return exposureState.exposureCompensationRange
     }
 
     fun setCameraExposure(value: Int) {

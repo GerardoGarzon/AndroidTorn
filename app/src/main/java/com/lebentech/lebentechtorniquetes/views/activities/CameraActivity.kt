@@ -2,9 +2,13 @@ package com.lebentech.lebentechtorniquetes.views.activities
 
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
+import android.widget.SeekBar
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
@@ -15,9 +19,7 @@ import com.lebentech.lebentechtorniquetes.interfaces.WelcomeDialogListener
 import com.lebentech.lebentechtorniquetes.models.Screen
 import com.lebentech.lebentechtorniquetes.views.activities.base.BaseActivity
 import com.lebentech.lebentechtorniquetes.utils.Constants
-import com.lebentech.lebentechtorniquetes.utils.Utils
 import com.lebentech.lebentechtorniquetes.viewmodel.CameraRecognitionViewModel
-import com.lebentech.lebentechtorniquetes.views.dialogs.BrightnessDialog
 import com.lebentech.lebentechtorniquetes.views.dialogs.WelcomeDialog
 import java.util.*
 
@@ -52,6 +54,7 @@ class CameraActivity : BaseActivity() {
     /**
      * Prepare the view model, listeners for the buttons and the camera manager
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun prepareComponents() {
         // View model
         setFullScreenActivity()
@@ -62,12 +65,30 @@ class CameraActivity : BaseActivity() {
             openLoginActivity()
         }
 
-        binding.ivLogo.setOnClickListener {
-            BrightnessDialog()
-                .show(supportFragmentManager, Constants.DIALOG_TAG)
+        binding.brightnessButton.setOnClickListener {
+            viewModel.getCameraExposure()
+            if (binding.seekBar.visibility == View.GONE) {
+                binding.seekBar.visibility = View.VISIBLE
+            } else {
+                binding.seekBar.visibility = View.GONE
+            }
+            // BrightnessDialog().show(supportFragmentManager, Constants.DIALOG_TAG)
         }
 
         viewModel.setCameraManager(binding, this)
+
+        binding.seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                viewModel.setCameraRangeExposure(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
 
         lastRecognition = Date()
     }
@@ -75,11 +96,16 @@ class CameraActivity : BaseActivity() {
     /**
      * When the app is already launched it will wait for 3 seconds to start recording faces
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
         Handler(Looper.getMainLooper()).postDelayed({
             viewModel.setFacesSize(binding.cameraView.height.toFloat(), binding.cameraView.width.toFloat())
             setObservers()
+            val range = viewModel.getCameraRangeExposure()
+            binding.seekBar.min = range.lower
+            binding.seekBar.max = range.upper
+            binding.seekBar.progress = viewModel.getCameraExposure()
         }, 3000)
     }
 

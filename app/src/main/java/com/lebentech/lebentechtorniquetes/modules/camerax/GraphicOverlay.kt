@@ -102,6 +102,7 @@ class GraphicOverlay @JvmOverloads constructor(
         }
         if (this.facesDetected.isEmpty()) {
             listener.noFaceDetection()
+
         }
         // canvas.drawRect( minFaceSize.left, minFaceSize.top, minFaceSize.right, minFaceSize.bottom, this.paintMin )
         // canvas.drawRect( maxFaceSize.left, maxFaceSize.top, maxFaceSize.right, maxFaceSize.bottom, this.paintMax )

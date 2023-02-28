@@ -5,6 +5,8 @@
 package com.lebentech.lebentechtorniquetes.viewmodel
 
 import android.app.Application
+import android.util.Log
+import android.util.Range
 import android.view.ViewGroup
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
@@ -145,5 +147,17 @@ class CameraRecognitionViewModel(application: Application) : AndroidViewModel(ap
                 recognitionState.postValue(Constants.PHOTO_TAKEN)
             }
         })
+    }
+
+    fun getCameraExposure(): Int {
+        return cameraManager.getCameraExposure()
+    }
+
+    fun getCameraRangeExposure(): Range<Int> {
+        return cameraManager.getCameraRange()
+    }
+
+    fun setCameraRangeExposure(value: Int) {
+        cameraManager.setCameraExposure(value)
     }
 }
